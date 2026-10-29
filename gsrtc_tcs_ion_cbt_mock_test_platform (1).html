@@ -1,0 +1,5138 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSRTC કંડક્ટર ભરતી પરીક્ષા - TCS iON CBT Mock Test Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Google Fonts for Gujarati and Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Hind Vadodara', 'Inter', system-ui, -apple-system, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* TCS iON Status Palette Shapes */
+    .tcs-btn {
+      width: 40px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid #d1d5db;
+    }
+    .tcs-btn:hover {
+      filter: brightness(0.92);
+      transform: scale(1.04);
+    }
+    /* Not Visited: Silver/Gray with border */
+    .status-not-visited {
+      background-color: #f3f4f6;
+      color: #374151;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+    }
+    /* Not Answered: Red/Orange rounded polygon */
+    .status-not-answered {
+      background-color: #e53e3e;
+      color: #ffffff;
+      border-radius: 4px;
+      border: 1px solid #c53030;
+      clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+    }
+    /* Answered: Green polygon */
+    .status-answered {
+      background-color: #2e7d32;
+      color: #ffffff;
+      border-radius: 4px;
+      border: 1px solid #1b5e20;
+      clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 100%, 0 100%);
+    }
+    /* Marked for Review: Violet circle */
+    .status-review {
+      background-color: #7b1fa2;
+      color: #ffffff;
+      border-radius: 50%;
+      border: 1px solid #4a148c;
+    }
+    /* Answered & Marked for Review: Violet circle with green dot */
+    .status-answered-review {
+      background-color: #7b1fa2;
+      color: #ffffff;
+      border-radius: 50%;
+      border: 1px solid #4a148c;
+    }
+    .status-answered-review::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 12px;
+      height: 12px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+    }
+    /* Current active question highlight */
+    .tcs-btn.active-q {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+    }
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-[#f0f3f6] text-slate-800 h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP HEADER (TCS iON Authentic Navigation) -->
+  <header class="bg-[#1f3a60] text-white px-3 sm:px-5 py-2.5 flex items-center justify-between border-b-2 border-[#162a45] shadow-md z-30 flex-shrink-0">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div class="bg-red-600 text-white font-black px-2 py-1 rounded text-xs tracking-wider">GSRTC</div>
+      <div class="leading-tight">
+        <h1 class="text-sm sm:text-base font-bold tracking-tight text-white flex items-center gap-1.5">
+          <span>GSRTC કંડક્ટર ભરતી પરીક્ષા</span>
+          <span class="hidden md:inline-block text-xs bg-blue-800 text-blue-200 px-2 py-0.5 rounded font-normal">TCS iON CBT Pattern</span>
+        </h1>
+        <p class="text-[11px] sm:text-xs text-blue-200" id="currentShiftSubtitle">કંડક્ટર પેપર (29-12-2024) - સત્તાવાર પ્રશ્નપત્ર</p>
+      </div>
+    </div>
+
+    <!-- Controls & Timer -->
+    <div class="flex items-center gap-2 sm:gap-4">
+      <!-- Shift Selector Dropdown Button -->
+      <button id="btnOpenShiftModal" class="flex items-center gap-1.5 bg-[#2a4d7d] hover:bg-[#345e99] text-xs font-semibold px-2.5 py-1.5 rounded border border-blue-400 text-white transition-all shadow-sm">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+        <span class="hidden sm:inline">પેપર / શિફ્ટ:</span>
+        <span id="headerShiftTitle" class="font-bold text-amber-300 truncate max-w-[120px] sm:max-w-none">29-12-2024</span>
+      </button>
+
+      <!-- Digital Countdown Timer -->
+      <div class="flex items-center gap-1.5 bg-[#0f1f33] px-3 py-1 rounded border border-blue-900 shadow-inner">
+        <svg class="w-4 h-4 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="text-right">
+          <div class="text-[9px] uppercase tracking-wider text-slate-300 font-medium">સમય બાકી</div>
+          <div id="examTimer" class="font-mono text-sm sm:text-base font-bold text-white tracking-wider">120:00</div>
+        </div>
+      </div>
+
+      <!-- Fullscreen Toggle -->
+      <button id="btnFullscreen" class="hidden sm:flex items-center gap-1 text-xs bg-slate-700 hover:bg-slate-600 px-2.5 py-1.5 rounded text-white transition-colors" title="ફૂલસ્ક્રીન મોડ">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5m-7 11l-5 5m0 0h4m-4 0v-4m16 4v-4m0 4h-4m4 0l-5-5"></path></svg>
+        <span>ફૂલસ્ક્રીન</span>
+      </button>
+
+      <!-- Candidate Box (Desktop) -->
+      <div class="hidden lg:flex items-center gap-2 pl-2 border-l border-blue-900 text-xs">
+        <div class="w-8 h-8 rounded-full bg-slate-300 border border-white flex items-center justify-center font-bold text-slate-700 overflow-hidden shadow">
+          <svg class="w-6 h-6 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+        </div>
+        <div class="leading-none text-left">
+          <span class="block font-bold text-amber-200">પરીક્ષાર્થી (Candidate)</span>
+          <span class="text-[10px] text-slate-300">System: C-104</span>
+        </div>
+      </div>
+
+      <!-- Mobile Palette Drawer Toggle -->
+      <button id="btnToggleMobilePalette" class="lg:hidden flex items-center gap-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-2.5 py-1.5 rounded shadow">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        <span>પેલેટ</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SUB-BAR (Sections & Marking Scheme) -->
+  <div class="bg-white border-b border-slate-300 px-3 sm:px-5 py-1.5 flex flex-wrap items-center justify-between text-xs gap-2 flex-shrink-0 z-20 shadow-sm">
+    <!-- Section Tabs -->
+    <div class="flex items-center gap-1 overflow-x-auto py-0.5 no-scrollbar" id="sectionTabsContainer">
+      <button class="sec-tab active px-3 py-1 font-bold rounded-t border-b-2 border-blue-600 text-blue-700 bg-blue-50 transition-colors" data-sec="all">તમામ પ્રશ્નો (All)</button>
+      <button class="sec-tab px-3 py-1 font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded transition-colors" data-sec="gsrtc_rules">રોડ સેફ્ટી &amp; નિગમ નિયમો</button>
+      <button class="sec-tab px-3 py-1 font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded transition-colors" data-sec="gujarati">ગુજરાતી વ્યાકરણ &amp; સાહિત્ય</button>
+      <button class="sec-tab px-3 py-1 font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded transition-colors" data-sec="computer">કમ્પ્યુટર જ્ઞાન</button>
+      <button class="sec-tab px-3 py-1 font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded transition-colors" data-sec="general_knowledge">સામાન્ય જ્ઞાન &amp; ગણિત</button>
+    </div>
+
+    <!-- Marking Scheme Indicator -->
+    <div class="flex items-center gap-3 text-[11px] text-slate-600 ml-auto font-medium">
+      <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-600"></span>સાચો જવાબ: <strong class="text-emerald-700">+1.00</strong></span>
+      <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-600"></span>ખોટો જવાબ: <strong class="text-rose-700">-0.25</strong></span>
+    </div>
+  </div>
+
+  <!-- MAIN BODY SPLIT CONTAINER (Left: Question, Right: Palette) -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT PANE: QUESTION DISPLAY & ACTIONS -->
+    <main class="flex-1 flex flex-col bg-white overflow-hidden border-r border-slate-300">
+      <!-- Question Info Bar -->
+      <div class="bg-slate-100 border-b border-slate-200 px-4 py-2 flex items-center justify-between text-xs flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-700 text-sm" id="lblQuestionNumber">પ્રશ્ન ક્રમાંક: 1</span>
+          <span class="text-slate-400">|</span>
+          <span class="text-slate-500 font-medium" id="lblQuestionType">MCQ (એકવિકલ્પ પ્રશ્ન)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="badgeQuestionStatus" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-200 text-slate-700">મુલાકાત નથી લીધી (Not Visited)</span>
+        </div>
+      </div>
+
+      <!-- Question Text & Options Container (Scrollable) -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5" id="questionArea">
+        <!-- Question Text -->
+        <div class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed bg-[#f8fafc] p-4 rounded-lg border border-slate-200 shadow-sm">
+          <span class="font-bold text-blue-700 mr-1" id="qNumPrefix">પ્ર. 1.</span>
+          <span id="questionText">પ્રશ્ન લોડ થઈ રહ્યો છે...</span>
+        </div>
+
+        <!-- Options Container -->
+        <div class="space-y-3" id="optionsContainer">
+          <!-- Dynamically populated options A, B, C, D -->
+        </div>
+
+        <!-- Note if Cancelled / Grace question -->
+        <div id="graceNotice" class="hidden p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800 font-medium flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          <span>આ પ્રશ્ન પરીક્ષા બોર્ડ દ્વારા રદ થયેલ છે (ગ્રેસ માર્કસ - Grace Mark આપવામાં આવશે).</span>
+        </div>
+      </div>
+
+      <!-- BOTTOM NAVIGATION BAR (Sticky TCS iON Actions) -->
+      <div class="bg-slate-100 border-t border-slate-300 px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 flex-shrink-0 shadow-lg z-10">
+        <!-- Left buttons -->
+        <div class="flex items-center gap-2">
+          <button id="btnMarkReview" class="px-3 py-1.5 bg-[#7b1fa2] hover:bg-[#6a1b9a] text-white text-xs sm:text-sm font-semibold rounded shadow transition-colors flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+            <span>રિવ્યૂ માટે ચિહ્નિત કરો (Mark for Review &amp; Next)</span>
+          </button>
+          <button id="btnClearResponse" class="px-3 py-1.5 bg-white hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium border border-slate-300 rounded shadow-sm transition-colors">
+            જવાબ સાફ કરો (Clear Response)
+          </button>
+        </div>
+
+        <!-- Right buttons -->
+        <div class="flex items-center gap-2 ml-auto">
+          <button id="btnPrev" class="px-4 py-1.5 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs sm:text-sm font-semibold rounded shadow transition-colors flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            <span>પાછળ (Previous)</span>
+          </button>
+          <button id="btnSaveNext" class="px-5 py-1.5 bg-[#1e88e5] hover:bg-[#1565c0] text-white text-xs sm:text-sm font-bold rounded shadow transition-colors flex items-center gap-1">
+            <span>સાચવો અને આગળ વધો (Save &amp; Next)</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANE: QUESTION PALETTE & CANDIDATE SUMMARY (TCS Standard) -->
+    <aside id="paletteAside" class="fixed lg:static inset-y-0 right-0 w-80 max-w-[85vw] bg-[#f8fafc] flex flex-col border-l border-slate-300 shadow-xl lg:shadow-none z-40 transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+      
+      <!-- Palette Header / Mobile Close -->
+      <div class="p-3 bg-slate-200 border-b border-slate-300 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-full bg-blue-700 text-white font-bold flex items-center justify-center text-sm shadow">
+            C
+          </div>
+          <div class="leading-none text-left">
+            <span class="block font-bold text-slate-800 text-xs">ઉમેદવાર (Candidate)</span>
+            <span class="text-[10px] text-slate-500 font-mono">Roll: GSRTC-2024</span>
+          </div>
+        </div>
+        <button id="btnCloseMobilePalette" class="lg:hidden text-slate-600 hover:text-slate-900 p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- TCS LEGEND COUNTERS -->
+      <div class="p-3 bg-white border-b border-slate-200 grid grid-cols-2 gap-2 text-[11px] flex-shrink-0">
+        <div class="flex items-center gap-1.5">
+          <div class="w-6 h-6 status-answered flex items-center justify-center text-[10px] font-bold" id="cntAnswered">0</div>
+          <span class="text-slate-700">જવાબ આપેલ (Answered)</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-6 h-6 status-not-answered flex items-center justify-center text-[10px] font-bold" id="cntNotAnswered">0</div>
+          <span class="text-slate-700">જવાબ નથી આપેલ</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-6 h-6 status-not-visited flex items-center justify-center text-[10px] font-bold" id="cntNotVisited">0</div>
+          <span class="text-slate-700">મુલાકાત નથી લીધી</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-6 h-6 status-review flex items-center justify-center text-[10px] font-bold" id="cntReview">0</div>
+          <span class="text-slate-700">રિવ્યૂ માટે ચિહ્નિત</span>
+        </div>
+        <div class="col-span-2 flex items-center gap-1.5 pt-1 border-t border-slate-100">
+          <div class="w-6 h-6 status-answered-review flex items-center justify-center text-[10px] font-bold" id="cntAnsweredReview">0</div>
+          <span class="text-slate-700">જવાબ આપેલ અને રિવ્યૂ માટે ચિહ્નિત</span>
+        </div>
+      </div>
+
+      <!-- PALETTE TITLE & SECTION FILTER -->
+      <div class="px-3 py-2 bg-blue-900 text-white font-bold text-xs flex items-center justify-between flex-shrink-0">
+        <span>પ્રશ્ન પત્રિકા પેલેટ (Question Palette)</span>
+        <span class="text-[11px] bg-blue-800 px-1.5 py-0.5 rounded text-blue-200" id="lblPaletteCount">100 પ્રશ્નો</span>
+      </div>
+
+      <!-- GRID OF QUESTIONS (Scrollable) -->
+      <div class="flex-1 overflow-y-auto p-3" id="paletteGridContainer">
+        <div class="grid grid-cols-5 gap-2" id="paletteGrid">
+          <!-- Populated dynamically: 1 to 100 buttons -->
+        </div>
+      </div>
+
+      <!-- PALETTE BOTTOM ACTION BUTTONS -->
+      <div class="p-3 bg-slate-200 border-t border-slate-300 space-y-2 flex-shrink-0">
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btnOpenQuestionPaper" class="w-full py-1.5 bg-white hover:bg-slate-100 border border-slate-400 text-slate-800 text-xs font-semibold rounded shadow-sm transition-colors">
+            📄 પ્રશ્નપત્ર (Paper)
+          </button>
+          <button id="btnOpenInstructions" class="w-full py-1.5 bg-white hover:bg-slate-100 border border-slate-400 text-slate-800 text-xs font-semibold rounded shadow-sm transition-colors">
+            ℹ️ સૂચનાઓ (Info)
+          </button>
+        </div>
+        <button id="btnSubmitExam" class="w-full py-2 bg-[#2e7d32] hover:bg-[#1b5e20] text-white text-sm font-bold rounded shadow transition-colors flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>પરીક્ષા સબમિટ કરો (Submit Exam)</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Drawer Backdrop -->
+    <div id="paletteBackdrop" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+  </div>
+
+  <!-- MODAL 1: SHIFT / PAPER SELECTOR MODAL -->
+  <div id="modalShiftSelect" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in duration-150">
+      <div class="bg-[#1f3a60] text-white p-4 flex items-center justify-between">
+        <div>
+          <h2 class="font-bold text-base">GSRTC કંડક્ટર પરીક્ષા પેપર પસંદ કરો</h2>
+          <p class="text-xs text-blue-200">તમે જે વર્ષ અને શિફ્ટનું પેપર અટેમ્પટ કરવા માંગતા હોવ તે પસંદ કરો</p>
+        </div>
+        <button id="btnCloseShiftModal" class="text-white hover:text-red-300 p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-2.5 flex-1" id="shiftListContainer">
+        <!-- Dynamically rendered shift cards -->
+      </div>
+      <div class="p-3 bg-slate-100 border-t border-slate-200 text-right">
+        <button id="btnCancelShiftSelect" class="px-4 py-1.5 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-semibold rounded">રદ કરો</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: SUBMISSION CONFIRMATION & EXAM SUMMARY -->
+  <div id="modalSubmitSummary" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden flex flex-col animate-in fade-in zoom-in duration-150">
+      <div class="bg-[#2e7d32] text-white p-4">
+        <h2 class="font-bold text-base flex items-center gap-1.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>પરીક્ષા સારાંશ (Exam Summary)</span>
+        </h2>
+        <p class="text-xs text-emerald-100">કૃપા કરીને સબમિટ કરતાં પહેલાં તમારી વિગતો ચકાસો</p>
+      </div>
+      <div class="p-4 space-y-3">
+        <table class="w-full text-xs border border-slate-200 rounded overflow-hidden">
+          <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+            <tr>
+              <th class="p-2 text-left">પ્રશ્ન સ્થિતિ</th>
+              <th class="p-2 text-center">સંખ્યા</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700">
+            <tr>
+              <td class="p-2 flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-600"></span>જવાબ આપેલ (Answered)</td>
+              <td class="p-2 text-center font-bold text-emerald-700" id="sumAnswered">0</td>
+            </tr>
+            <tr>
+              <td class="p-2 flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-600"></span>જવાબ નથી આપેલ (Not Answered)</td>
+              <td class="p-2 text-center font-bold text-rose-700" id="sumNotAnswered">0</td>
+            </tr>
+            <tr>
+              <td class="p-2 flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-600"></span>રિવ્યૂ માટે ચિહ્નિત (Marked for Review)</td>
+              <td class="p-2 text-center font-bold text-purple-700" id="sumReview">0</td>
+            </tr>
+            <tr>
+              <td class="p-2 flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-800"></span>જવાબ આપેલ અને રિવ્યૂ ચિહ્નિત</td>
+              <td class="p-2 text-center font-bold text-purple-900" id="sumAnsweredReview">0</td>
+            </tr>
+            <tr>
+              <td class="p-2 flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-400"></span>મુલાકાત નથી લીધી (Not Visited)</td>
+              <td class="p-2 text-center font-bold text-slate-600" id="sumNotVisited">0</td>
+            </tr>
+            <tr class="bg-slate-50 font-bold">
+              <td class="p-2">કુલ પ્રશ્નો (Total Questions)</td>
+              <td class="p-2 text-center text-blue-900" id="sumTotal">0</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
+          ⚠️ <strong>ચેતવણી:</strong> એકવાર અંતિમ સબમિટ કર્યા પછી તમે તમારા જવાબોમાં કોઈ ફેરફાર કરી શકશો નહીં. શું તમે ખરેખર સબમિટ કરવા માંગો છો?
+        </div>
+      </div>
+      <div class="p-3 bg-slate-100 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button id="btnReturnToExam" class="px-4 py-2 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-semibold rounded transition-colors">
+          ના, પાછા જાઓ (Resume Exam)
+        </button>
+        <button id="btnFinalSubmit" class="px-5 py-2 bg-[#2e7d32] hover:bg-[#1b5e20] text-white text-xs font-bold rounded shadow transition-colors">
+          હા, અંતિમ સબમિટ કરો (Final Submit)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: COMPREHENSIVE RESULT & SCORECARD -->
+  <div id="modalResult" class="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-3 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[95vh] animate-in fade-in zoom-in duration-150">
+      
+      <!-- Result Header -->
+      <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-5 flex items-center justify-between">
+        <div>
+          <span class="text-xs bg-amber-400 text-slate-900 font-bold px-2 py-0.5 rounded uppercase tracking-wider">પરીક્ષા પરિણામ (Scorecard)</span>
+          <h2 class="text-lg sm:text-xl font-bold mt-1" id="resShiftTitle">GSRTC કંડક્ટર પરીક્ષા પરિણામ</h2>
+          <p class="text-xs text-blue-200" id="resShiftDate">તારીખ: 29-12-2024</p>
+        </div>
+        <button id="btnCloseResult" class="text-white hover:text-red-300 p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Result Body (Scrollable) -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-6 flex-1">
+        
+        <!-- Score Highlights Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
+          <div class="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded-xl shadow-sm">
+            <span class="text-xs text-blue-600 font-semibold block">કુલ ગુણ (Final Score)</span>
+            <span class="text-2xl sm:text-3xl font-black text-blue-900 mt-1 block" id="resFinalScore">0.00</span>
+            <span class="text-[11px] text-blue-500 font-medium" id="resMaxMarks">/ 100 ગુણ</span>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 p-3 sm:p-4 rounded-xl shadow-sm">
+            <span class="text-xs text-emerald-600 font-semibold block">સાચા જવાબ (Correct)</span>
+            <span class="text-2xl sm:text-3xl font-black text-emerald-800 mt-1 block" id="resCorrectCount">0</span>
+            <span class="text-[11px] text-emerald-600 font-medium" id="resCorrectMarks">+0.00 ગુણ</span>
+          </div>
+          <div class="bg-rose-50 border border-rose-200 p-3 sm:p-4 rounded-xl shadow-sm">
+            <span class="text-xs text-rose-600 font-semibold block">ખોટા જવાબ (Negative)</span>
+            <span class="text-2xl sm:text-3xl font-black text-rose-800 mt-1 block" id="resWrongCount">0</span>
+            <span class="text-[11px] text-rose-600 font-medium" id="resNegativeMarks">-0.00 ગુણ</span>
+          </div>
+          <div class="bg-amber-50 border border-amber-200 p-3 sm:p-4 rounded-xl shadow-sm">
+            <span class="text-xs text-amber-700 font-semibold block">ચોક્કસાઈ (Accuracy)</span>
+            <span class="text-2xl sm:text-3xl font-black text-amber-800 mt-1 block" id="resAccuracy">0%</span>
+            <span class="text-[11px] text-amber-600 font-medium" id="resAttemptedRatio">0 / 100 અટેમ્પટ</span>
+          </div>
+        </div>
+
+        <!-- Section Analysis Table -->
+        <div>
+          <h3 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            <span>વિષયવાર પરિણામ વિશ્લેષણ (Subject Breakdown)</span>
+          </h3>
+          <div class="border border-slate-200 rounded-lg overflow-x-auto shadow-sm">
+            <table class="w-full text-xs text-left text-slate-700 divide-y divide-slate-200">
+              <thead class="bg-slate-100 font-bold text-slate-800">
+                <tr>
+                  <th class="p-2.5">વિષય / સેક્શન</th>
+                  <th class="p-2.5 text-center">કુલ પ્રશ્ન</th>
+                  <th class="p-2.5 text-center text-emerald-700">સાચા</th>
+                  <th class="p-2.5 text-center text-rose-700">ખોટા</th>
+                  <th class="p-2.5 text-center text-slate-500">બાકી</th>
+                  <th class="p-2.5 text-center">મેળવેલ ગુણ</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="resSectionTableBody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Detailed Solutions / Answer Key Accordion Filter -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+              <span>સંપૂર્ણ પ્રશ્નપત્ર વિશ્લેષણ &amp; ઓફિશિયલ આન્સર કી (Detailed Review)</span>
+            </h3>
+            <!-- Filter Pills -->
+            <div class="flex items-center gap-1 text-[11px]" id="reviewFilterGroup">
+              <button class="rev-flt active bg-blue-600 text-white font-bold px-2.5 py-1 rounded shadow-sm" data-flt="all">તમામ</button>
+              <button class="rev-flt bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded" data-flt="correct">માત્ર સાચા</button>
+              <button class="rev-flt bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded" data-flt="wrong">માત્ર ખોટા</button>
+              <button class="rev-flt bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded" data-flt="unattempted">બાકી રાખેલ</button>
+            </div>
+          </div>
+
+          <!-- Questions Review List -->
+          <div class="space-y-3" id="reviewQuestionsContainer">
+            <!-- Populated dynamically with full solution card -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Footer Actions -->
+      <div class="p-3 sm:p-4 bg-slate-100 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+        <button id="btnReattempt" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded shadow transition-colors flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          <span>આ જ પેપર ફરીથી આપો (Re-attempt)</span>
+        </button>
+        <button id="btnChooseAnotherFromRes" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs sm:text-sm font-bold rounded shadow transition-colors">
+          બીજી શિફ્ટ / પેપર પસંદ કરો (Select Another Shift)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: INSTRUCTIONS MODAL -->
+  <div id="modalInstructions" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="bg-blue-800 text-white p-3.5 flex items-center justify-between">
+        <h2 class="font-bold text-sm">પરીક્ષા અંગે સામાન્ય સૂચનાઓ (General Instructions)</h2>
+        <button id="btnCloseInstructions" class="text-white hover:text-slate-200 p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-3 text-xs text-slate-700 leading-relaxed flex-1">
+        <p>1. સ્ક્રીનની જમણી બાજુના ખૂણામાં ક્લોક (ટાઈમર) દર્શાવવામાં આવ્યું છે, જે પરીક્ષા પૂર્ણ કરવા માટે બાકી રહેલો સમય દર્શાવે છે.</p>
+        <p>2. પ્રશ્ન પેલેટ પર દર્શાવવામાં આવેલ વિવિધ કલર કોડના અર્થ નીચે મુજબ છે:</p>
+        <div class="space-y-1.5 pl-2">
+          <div class="flex items-center gap-2"><span class="w-5 h-5 status-not-visited inline-flex items-center justify-center text-[10px] font-bold">1</span> તમે આ પ્રશ્નની મુલાકાત લીધી નથી.</div>
+          <div class="flex items-center gap-2"><span class="w-5 h-5 status-not-answered inline-flex items-center justify-center text-[10px] font-bold">2</span> તમે આ પ્રશ્નનો જવાબ આપ્યો નથી.</div>
+          <div class="flex items-center gap-2"><span class="w-5 h-5 status-answered inline-flex items-center justify-center text-[10px] font-bold">3</span> તમે આ પ્રશ્નનો ઉત્તર આપી દીધો છે.</div>
+          <div class="flex items-center gap-2"><span class="w-5 h-5 status-review inline-flex items-center justify-center text-[10px] font-bold">4</span> તમે ઉત્તર આપ્યા વગર પુનર્વિચારણા (Review) માટે ચિહ્નિત કર્યો છે.</div>
+          <div class="flex items-center gap-2"><span class="w-5 h-5 status-answered-review inline-flex items-center justify-center text-[10px] font-bold">5</span> તમે ઉત્તર આપ્યો છે અને પુનર્વિચારણા (Review) માટે પણ ચિહ્નિત કર્યો છે.</div>
+        </div>
+        <p>3. <strong>ગુણ પદ્ધતિ:</strong> દરેક સાચા ઉત્તર માટે <strong>+1.00 ગુણ</strong> અને દરેક ખોટા ઉત્તર માટે <strong>-0.25 ગુણ</strong> કાપવામાં આવશે.</p>
+        <p>4. પ્રશ્નનો ઉત્તર સાચવવા માટે હંમેશા <strong>'Save &amp; Next'</strong> પર ક્લિક કરો.</p>
+      </div>
+      <div class="p-3 bg-slate-100 border-t border-slate-200 text-right">
+        <button id="btnDismissInstructions" class="px-4 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs rounded">સમજાયું (Close)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: FULL QUESTION PAPER VIEW -->
+  <div id="modalQuestionPaper" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="bg-slate-800 text-white p-3.5 flex items-center justify-between">
+        <h2 class="font-bold text-sm">સંપૂર્ણ પ્રશ્નપત્ર (Complete Question Paper)</h2>
+        <button id="btnCloseQuestionPaper" class="text-white hover:text-red-300 p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-4 flex-1 text-xs" id="fullPaperListContainer">
+        <!-- Rendered all questions -->
+      </div>
+      <div class="p-3 bg-slate-100 border-t border-slate-200 text-right">
+        <button id="btnDismissQuestionPaper" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs rounded">બંધ કરો (Close)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INLINE DATA & JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    // Shift database loaded from extracted PDF questions
+    const SHIFTS_DATA = [
+  {
+    "id": "shift_2024",
+    "title": "કંડક્ટર પેપર (29-12-2024)",
+    "subtitle": "Latest GSRTC Conductor Official Paper (સંપૂર્ણ 100 પ્રશ્નો)",
+    "date": "29-12-2024",
+    "duration_mins": 120,
+    "total_marks": 100,
+    "questions": [
+      {
+        "id": 1,
+        "section": "maths_reasoning",
+        "question": "(64)² - (36)² = 20 × a હોય તો a = .......",
+        "options": [
+          "70",
+          "120",
+          "140",
+          "180"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 2,
+        "section": "maths_reasoning",
+        "question": "નીચે પૈકી કયો અપૂર્ણાંક સૌથી નાનો છે?",
+        "options": [
+          "11/15",
+          "16/19",
+          "7/9",
+          "19/37"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 3,
+        "section": "maths_reasoning",
+        "question": "નીચે પૈકી કયું વર્ષ લીપ વર્ષ નથી?",
+        "options": [
+          "2000",
+          "2040",
+          "2060",
+          "2100"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 4,
+        "section": "maths_reasoning",
+        "question": "જો ચાની કિંમત 20% વધે તો તેનું વેચાણ 20% ઘટે છે. તો ચાની વધેલી કિંમતને લીધે મૂળ વેપારમાં કેટલા ટકા ખોટ જશે?",
+        "options": [
+          "2%",
+          "4%",
+          "8%",
+          "10%"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 5,
+        "section": "maths_reasoning",
+        "question": "જો A : B = 5 : 7 અને B : C = 6 : 11 હોય તો A : B : C = ....",
+        "options": [
+          "30 : 42 : 77",
+          "35 : 49 : 42",
+          "55 : 77 : 66",
+          "35 : 42 : 77"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 6,
+        "section": "maths_reasoning",
+        "question": "વત્સલ તે પ્રતિકનો પરિચય પોતાના પિતાની પત્નીના એક માત્ર ભાઈની પત્નીના પુત્રવધૂના પતિ તરીકે કરાવે છે. તો વત્સલ તે પ્રતિક સાથે કેવી રીતે સંબંધ ધરાવે છે?",
+        "options": [
+          "પિતરાઈ ભાઈ",
+          "પુત્ર",
+          "સસરા",
+          "જમાઈ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 7,
+        "section": "maths_reasoning",
+        "question": "35 વિદ્યાર્થીઓના જૂથની સરેરાશ ઉંમર 15 વર્ષ છે. જ્યારે તેમના શિક્ષકની ઉંમર સાથે જોડવામાં આવે તો સરેરાશ ઉંમર 1 વર્ષ વધી જાય છે. તો શિક્ષકની ઉંમર શોધો.",
+        "options": [
+          "31 વર્ષ",
+          "36 વર્ષ",
+          "51 વર્ષ",
+          "56 વર્ષ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 8,
+        "section": "maths_reasoning",
+        "question": "આપેલ શ્રેણીનું આગળનું પદ શોધો: -2, 5, 9, 19, 37, ?",
+        "options": [
+          "74",
+          "75",
+          "76",
+          "78"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 9,
+        "section": "maths_reasoning",
+        "question": "60 કિમી/કલાકની ઝડપથી દોડતી ટ્રેન જો એક થાંભલાને 9 સેકન્ડમાં ઓળંગે તો ટ્રેનની લંબાઈ શું હશે?",
+        "options": [
+          "120 મીટર",
+          "150 મીટર",
+          "180 મીટર",
+          "210 મીટર"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 10,
+        "section": "maths_reasoning",
+        "question": "જો x = 2 - √3 હોય તો x + 1/x ની કિંમત = .....",
+        "options": [
+          "4",
+          "2√3",
+          "4 + √3",
+          "4 - √3"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 11,
+        "section": "gsrtc_rules",
+        "question": "એસ.ટી. નિગમ સંચાલિત તમામ સર્વિસોના ભાડામાં તા. 01-08-2023થી કેટલા ટકા ભાવ વધારો કરવામાં આવેલ છે?",
+        "options": [
+          "15%",
+          "25%",
+          "30%",
+          "40%"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 12,
+        "section": "gsrtc_rules",
+        "question": "તા. 31-07-2023ના પરિપત્ર મુજબ એક્સપ્રેસ, ગુર્જર નગરી જેવી બસ સેવાના ભાડા નિયત કરવા માટે મુસાફરીના અંતર (કિલોમીટરમાં)ને કુલ કેટલા સ્ટેજમાં વહેંચવામાં આવ્યા છે?",
+        "options": [
+          "100",
+          "120",
+          "150",
+          "180"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 13,
+        "section": "gsrtc_rules",
+        "question": "એક સ્ટેજથી તે પછીના સ્ટેજમાં જતા કુલ કેટલા કિલોમીટર વધે છે?",
+        "options": [
+          "3",
+          "5",
+          "6",
+          "8"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 14,
+        "section": "gsrtc_rules",
+        "question": "કેટલા વર્ષ સુધીના બાળકની ટિકિટ નિઃશુલ્ક હોય છે?",
+        "options": [
+          "3 વર્ષ",
+          "5 વર્ષ",
+          "6 વર્ષ",
+          "8 વર્ષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 15,
+        "section": "gsrtc_rules",
+        "question": "જો 01-10-2018ના રોજ વોલ્વો સ્લીપરમાં 150 કિ.મી. મુસાફરીનો દર રૂા. 300 હોય તો તા. 01-10-2024ના તે કેટલો થયેલ છે?",
+        "options": [
+          "રૂા. 340",
+          "રૂા. 375",
+          "રૂા. 385",
+          "રૂા. 400"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 16,
+        "section": "gsrtc_rules",
+        "question": "ઇલેક્ટ્રિક બસ (ગ્રામ્ય)માં તા. 31-07-2023ના પરિપત્ર મુજબ નિગમ દ્વારા મહત્તમ કેટલા કિ.મી. સુધીના દર નિયત થયેલ છે?",
+        "options": [
+          "300 કિ.મી.",
+          "400 કિ.મી.",
+          "500 કિ.મી.",
+          "600 કિ.મી."
+        ],
+        "answer": 3
+      },
+      {
+        "id": 17,
+        "section": "gsrtc_rules",
+        "question": "મુસાફરી દીઠ કુલ કેટલા કિલોગ્રામ વજન (લગેજ) નિઃશુલ્ક છે?",
+        "options": [
+          "10",
+          "15",
+          "20",
+          "25"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 18,
+        "section": "gsrtc_rules",
+        "question": "GSRTC ની બસ અને બુકિંગ સુવિધાઓ માટે ટોલ ફ્રી નંબર કયો છે?",
+        "options": [
+          "1800 233 666666",
+          "1800 130 666666",
+          "1800 260 333333",
+          "1800 233 333333"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 19,
+        "section": "gsrtc_rules",
+        "question": "બે ત્રણ વર્ષના બાળકો, એક આઠ વર્ષનો બાળક, એક દસ વર્ષનો બાળક, એક ચૌદ વર્ષનો બાળક અને તેમના 3 પુખ્તવયના સ્વજન સ્ટેજ દીઠ રૂા. 9 ની 15 સ્ટેજની મુસાફરી કરે છે. તેમની પાસે કુલ 70 કિલોગ્રામ લગેજ છે. તો ચૂકવવાની થતી રકમ શોધો. (રદ થયેલ પ્રશ્ન - Grace Mark)",
+        "options": [
+          "રૂા. 675",
+          "રૂા. 743",
+          "રૂા. 608",
+          "રૂા. 540"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 20,
+        "section": "gsrtc_rules",
+        "question": "સામાન્ય રીતે GSRTC દ્વારા મુસાફરીના મહત્તમ કેટલા દિવસ પહેલાં ઑનલાઇન ટિકિટ અનામત (રિઝર્વેશન) ચાલુ થાય છે?",
+        "options": [
+          "30 દિવસ",
+          "45 દિવસ",
+          "60 દિવસ",
+          "90 દિવસ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 21,
+        "section": "gsrtc_rules",
+        "question": "કંડક્ટર કેટલા બેલ મારે તો ડ્રાઇવરે બસને નજીકના પોલીસ સ્ટેશને લઈ જવી જોઈએ? (રદ થયેલ પ્રશ્ન - Grace Mark)",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "કોઈ સીમા નિર્ધારિત નથી"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 22,
+        "section": "gsrtc_rules",
+        "question": "નીચેનામાંથી કોને ખાસ કિસ્સામાં શરતો સાથે બસમાં મુસાફરી કરવાની પરવાનગી છે?",
+        "options": [
+          "પાળેલ કૂતરો",
+          "જેલનો કેદી",
+          "શબ",
+          "આપેલ તમામ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 23,
+        "section": "gsrtc_rules",
+        "question": "મોટર વ્હીકલ એક્ટ, 1988ની કલમ ______ માં સ્પીડ લિમિટની જોગવાઈઓ કરેલ છે.",
+        "options": [
+          "કલમ - 180",
+          "કલમ - 112",
+          "કલમ - 120",
+          "કલમ - 202"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 24,
+        "section": "gsrtc_rules",
+        "question": "ગુજરાત મોટર વ્હીકલ રૂલ્સ, 1989ની કઈ કલમ મુજબ જાહેર સેવા માટેના વાહનમાં ફર્સ્ટ એઇડ બોક્સ (First Aid Box) રાખવું જરૂરી છે?",
+        "options": [
+          "154",
+          "164",
+          "20",
+          "172"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 25,
+        "section": "gsrtc_rules",
+        "question": "મોટર વ્હીકલ એક્ટ મુજબ ટ્રાન્સપોર્ટ વાહન માટે લાઇસન્સ લેવા માટે વ્યક્તિએ ______ વર્ષ પૂર્ણ કરેલ હોવા જોઈએ.",
+        "options": [
+          "16",
+          "18",
+          "20",
+          "23"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 26,
+        "section": "first_aid",
+        "question": "પુખ્ત વયના તંદુરસ્ત વ્યક્તિ માટે સામાન્ય રીતે રક્ત દબાણ (બ્લડ પ્રેશર) કેટલું હોવું જોઈએ?",
+        "options": [
+          "120/80 mmHg",
+          "145/90 mmHg",
+          "160/110 mmHg",
+          "180/110 mmHg"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 27,
+        "section": "first_aid",
+        "question": "હાર્ટએટેકના સમયમાં લોહીને પાતળું કરવા કઈ દવા તાત્કાલિક આપવામાં આવે છે?",
+        "options": [
+          "એસ્પિરિન",
+          "ઇબુપ્રોફેન",
+          "પેરાસીટામોલ",
+          "સેટ્રીઝીન"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 28,
+        "section": "first_aid",
+        "question": "સામાન્ય રીતે નીચે પૈકી કઈ હાર્ટએટેકની નિશાની નથી?",
+        "options": [
+          "છાતીમાં દુખાવો",
+          "ઉલટી આવવા",
+          "એકદમ માથામાં દુખવું",
+          "શ્વાસ લેવામાં તકલીફ થવી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 29,
+        "section": "first_aid",
+        "question": "કોઈ મુસાફર દાઝી જાય તો તાત્કાલિક શું કરવું જોઈએ?",
+        "options": [
+          "ઘા ની જગ્યા પર ભીની માટી લગાડવી",
+          "ઘા ને બેન્ડેજથી બંધ કરવો",
+          "ઘા પર ધી લગાડવું",
+          "ઘા પર ઠંડુ પાણી નાખવું"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 30,
+        "section": "first_aid",
+        "question": "જો કોઈને ખેંચ આવે તો તાત્કાલિક શું કરવું જોઈએ?",
+        "options": [
+          "તેના મોંઢામાં રૂમાલનો ટુકડો ભરાવી દેવો",
+          "તેમને પાણી પીવડાવવું",
+          "તેમની આજુબાજુથી તેમને ઇજા કરી શકે તે વસ્તુ હટાવી એક પડખે સુવડાવવા",
+          "હલન ચલન ના કરી શકે માટે હાથ પગ બાંધી દેવા"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 31,
+        "section": "computer",
+        "question": "માઇક્રોસોફ્ટ પેઇન્ટમાં તૈયાર થયેલ ફાઇલનું ડિફોલ્ટ એક્સ્ટેન્શન શું હોય છે?",
+        "options": [
+          ".txt",
+          ".doc",
+          ".exe",
+          ".bmp"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 32,
+        "section": "computer",
+        "question": "માઇક્રોસોફ્ટ એક્સેલમાં Rows અને Columns નાં જોડાણને શું કહે છે?",
+        "options": [
+          "Table",
+          "Cell",
+          "Sheet",
+          "Range"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 33,
+        "section": "computer",
+        "question": "પાવરપોઇન્ટ પ્રેઝન્ટેશનને પૂર્ણ સ્ક્રીનમાં જોવા માટે કઈ શોર્ટકટ કી વપરાય છે?",
+        "options": [
+          "F2",
+          "F7",
+          "F9",
+          "F5"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 34,
+        "section": "computer",
+        "question": "RAM નું પૂરું નામ શું છે?",
+        "options": [
+          "રીડ એક્સેસ મેમરી",
+          "રેન્ડમ એક્સેસ મેમરી",
+          "રીડ એક્ટીવ મેમરી",
+          "રેપીડ એક્સેસ મેમરી"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 35,
+        "section": "computer",
+        "question": "માઇક્રોસોફ્ટ એક્સેલમાં સમગ્ર રો (Row) પસંદ કરવા માટે કઈ શોર્ટ-કટ કી વપરાય છે?",
+        "options": [
+          "Ctrl + Shift + Space",
+          "Shift + Space",
+          "Ctrl + Space",
+          "Ctrl + Home"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 36,
+        "section": "computer",
+        "question": "નીચે પૈકી કયું આઉટપુટ ઉપકરણ નથી?",
+        "options": [
+          "મોનિટર",
+          "સ્પીકર",
+          "કીબોર્ડ",
+          "પ્રિન્ટર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 37,
+        "section": "computer",
+        "question": "નીચે પૈકી કઈ કમ્પ્યુટરની પ્રોગ્રામિંગ ભાષા નથી?",
+        "options": [
+          "Python",
+          "Javascript",
+          "Swift",
+          "UNIX"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 38,
+        "section": "computer",
+        "question": "સ્પ્રેડશીટ બનાવવા માટે Microsoft Office ના ક્યા પ્રોગ્રામનો ઉપયોગ થાય છે?",
+        "options": [
+          "MS Word",
+          "MS Excel",
+          "MS PowerPoint",
+          "MS Access"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 39,
+        "section": "computer",
+        "question": "ઇન્ટરનેટ પર ફાઇલ ટ્રાન્સફર કરવા માટે ક્યા પ્રોટોકોલનો ઉપયોગ થાય છે?",
+        "options": [
+          "HTTP",
+          "SMTP",
+          "FTP",
+          "SNMP"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 40,
+        "section": "computer",
+        "question": "નીચે પૈકી કમ્પ્યુટરમાં સ્ટોરેજનો સૌથી મોટો એકમ કયો છે?",
+        "options": [
+          "ઝેટાબાઈટ",
+          "પેટાબાઈટ",
+          "મેગાબાઈટ",
+          "એક્ઝાબાઈટ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 41,
+        "section": "computer",
+        "question": "1 નિબલ (Nibble) એટલે કેટલા બીટ્સ (Bits)?",
+        "options": [
+          "8",
+          "4",
+          "6",
+          "2"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 42,
+        "section": "computer",
+        "question": "નીચે પૈકી કયું વેબ બ્રાઉઝર નથી?",
+        "options": [
+          "મોઝીલા ફાયરફોક્સ (Firefox)",
+          "માઇક્રોસોફ્ટ એજ (Edge)",
+          "વિન્ડોઝ એક્સપ્લોરર (Explorer)",
+          "ગુગલ ક્રોમ (Chrome)"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 43,
+        "section": "computer",
+        "question": "નીચે પૈકી કઈ ઓપરેટિંગ સિસ્ટમ છે?",
+        "options": [
+          "માઇક્રોસોફ્ટ વર્ડ",
+          "ગૂગલ ક્રોમ",
+          "વિન્ડોઝ 10",
+          "એડોબ ફોટોશોપ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 44,
+        "section": "computer",
+        "question": "ફિશીંગ (Phishing) નો અર્થ શું થાય?",
+        "options": [
+          "ડેટા બેકઅપ કરવો",
+          "માલવેરનો એક પ્રકાર",
+          "સોફ્ટવેર અપડેટ કરવાની પ્રક્રિયા",
+          "વિશ્વસનીય સ્ત્રોત ઓળખાવી આપણી ગુપ્ત માહિતી જાણવી"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 45,
+        "section": "computer",
+        "question": "નીચે પૈકી શું હાર્ડવેરનું ઉદાહરણ છે?",
+        "options": [
+          "માઇક્રોસોફ્ટ એક્સેલ",
+          "વિન્ડોઝ 11",
+          "પ્રિન્ટર",
+          "એડોબ રીડર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 46,
+        "section": "computer",
+        "question": "નીચે પૈકી કઇ કલાઉડ સ્ટોરેજ સર્વિસ છે?",
+        "options": [
+          "ડ્રોપબોક્સ",
+          "ગુગલ ડ્રાઇવ",
+          "(A) અને (B) બંને",
+          "માઇક્રોસોફ્ટ વર્ડ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 47,
+        "section": "computer",
+        "question": "નીચે પૈકી કયો માલવેરનો પ્રકાર નથી?",
+        "options": [
+          "વાઇરસ (Virus)",
+          "ટ્રોજન હોર્સ (Trojan Horse)",
+          "વર્મ (Worm)",
+          "ફાયરવોલ (Firewall)"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 48,
+        "section": "computer",
+        "question": "નીચે પૈકી કયું કમ્પ્યુટર મેમરીનો એક પ્રકાર નથી?",
+        "options": [
+          "RAM",
+          "ROM",
+          "Cache",
+          "આપેલ પૈકી એક પણ નહીં"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 49,
+        "section": "computer",
+        "question": "કી-બોર્ડમાં કીની ગોઠવણીને આધારે કયા લે-આઉટવાળું કી-બોર્ડ ઉપલબ્ધ નથી?",
+        "options": [
+          "QWERTY",
+          "ASDEFC",
+          "DVORAK",
+          "AZERTY"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 50,
+        "section": "computer",
+        "question": "CD-ROM નો અર્થ શું થાય છે?",
+        "options": [
+          "Compactable Disc Read Only Memory",
+          "Compact Disc Read Only Memory",
+          "Compact Data Read Only Memory",
+          "Compactable Data Read Only Memory"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 51,
+        "section": "general_knowledge",
+        "question": "નવેમ્બર, 2024માં ગુજરાતી ______ કળાને GI ટેગ મળ્યો?",
+        "options": [
+          "ઘરચોળા",
+          "સુજની",
+          "માતાની પછેડી",
+          "પટોળા"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 52,
+        "section": "general_knowledge",
+        "question": "પ્રસિદ્ધ પર્યટન સ્થળ ધોળાવીરા કચ્છ જિલ્લાના ______ તાલુકામાં સ્થિત છે.",
+        "options": [
+          "રાપર",
+          "ભચાઉ",
+          "અબડાસા",
+          "ગાંધીધામ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 53,
+        "section": "general_knowledge",
+        "question": "નીચે પૈકી કયા ગુજરાતી ખેલાડીએ વર્ષ 2024ના પેરિસ ઓલિમ્પિકમાં ભાગ લીધેલ નથી?",
+        "options": [
+          "હરમીત દેસાઈ",
+          "માનવ ઠક્કર",
+          "માન્યા પટેલ",
+          "ઈલા વેનીલ વાલારિવન"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 54,
+        "section": "general_knowledge",
+        "question": "હાલમાં અમેરિકાની રાષ્ટ્રપતિ ચૂંટણીમાં વિજેતા બનેલ ડૉનાલ્ડ ટ્રમ્પ કઈ પાર્ટીના સત્તાવાર રાષ્ટ્રપતિ ઉમેદવાર છે?",
+        "options": [
+          "ડેમોક્રેટિક પાર્ટી",
+          "ગ્રીન પાર્ટી",
+          "રિપબ્લિકન પાર્ટી",
+          "લીબર્ટી પાર્ટી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 55,
+        "section": "general_knowledge",
+        "question": "'એક દેશ, એક ચૂંટણી' વિચાર અંતર્ગત બનેલ હાઇ લેવલ સમિતિના અધ્યક્ષ નીચે પૈકી કોણ હતા?",
+        "options": [
+          "શ્રી રામનાથ કોવિંદ",
+          "શ્રી મલ્લિકાર્જુન ખડગે",
+          "શ્રી ગુલામનબી આઝાદ",
+          "શ્રી દિનેશ ગોસ્વામી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 56,
+        "section": "general_knowledge",
+        "question": "નીચે પૈકી જિલ્લા અને તેમાં સ્થિત તાલુકાની કઈ જોડી યોગ્ય નથી?",
+        "options": [
+          "તાપી - નિઝર",
+          "સાબરકાંઠા - તલોદ",
+          "રાજકોટ - ગોંડલ",
+          "જામનગર - દિયોદર"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 57,
+        "section": "general_knowledge",
+        "question": "ગુજરાતનો નીચે પૈકી કયો જિલ્લો સમુદ્રને સ્પર્શતો નથી?",
+        "options": [
+          "અમરેલી",
+          "વલસાડ",
+          "તાપી",
+          "નવસારી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 58,
+        "section": "general_knowledge",
+        "question": "ગુજરાતનો કયો જિલ્લો કેન્દ્રના આકાંક્ષી જિલ્લા કાર્યક્રમ (Aspirational District Program)માં સમાવિષ્ટ છે?",
+        "options": [
+          "ડાંગ",
+          "નર્મદા",
+          "અરવલ્લી",
+          "પંચમહાલ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 59,
+        "section": "general_knowledge",
+        "question": "ગુજરાતમાં નીચે પૈકી કયું સ્થળ યુનેસ્કો વર્લ્ડ હેરિટેજ સ્થળમાં સમાવિષ્ટ છે?",
+        "options": [
+          "ચાંપાનેર",
+          "ધોળાવીરા",
+          "પાટણની રાણકી વાવ",
+          "આપેલ તમામ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 60,
+        "section": "general_knowledge",
+        "question": "ગાંધીજી દ્વારા કઈ સાલમાં ગુજરાત વિદ્યાપીઠની સ્થાપના થઇ?",
+        "options": [
+          "ઈ.સ. 1915",
+          "ઈ.સ. 1920",
+          "ઈ.સ. 1925",
+          "ઈ.સ. 1928"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 61,
+        "section": "general_knowledge",
+        "question": "સ્વતંત્ર ભારતના પ્રથમ મહિલા મુખ્યમંત્રી કોણ હતા?",
+        "options": [
+          "શ્રીમતી સરોજિની નાયડુ",
+          "શ્રીમતી સુષ્મા સ્વરાજ",
+          "શ્રીમતી સુચેતા કૃપલાણી",
+          "કુમારી માયાવતી દેવી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 62,
+        "section": "general_knowledge",
+        "question": "નીચે પૈકી કઇ સંસ્થા બંધારણીય સંસ્થા નથી?",
+        "options": [
+          "ગુજરાત જાહેર સેવા આયોગ",
+          "નીતિ આયોગ",
+          "રાષ્ટ્રીય અનુસૂચિત જનજાતિ આયોગ",
+          "નાણા પંચ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 63,
+        "section": "gujarati",
+        "question": "નીચે પૈકી કઈ નવલકથા કનૈયાલાલ મુનશીએ લખેલ છે?",
+        "options": [
+          "પૃથિવીવલ્લભ",
+          "સરસ્વતીચંદ્ર",
+          "ઝેર તો પીધા છે જાણી જાણી",
+          "માનવીની ભવાઈ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 64,
+        "section": "gujarati",
+        "question": "સૌથી તાજેતરમાં નીચે પૈકી ક્યાં ગુજરાતી સર્જકને જ્ઞાનપીઠ પુરસ્કાર મળેલ છે?",
+        "options": [
+          "શ્રી રાજેન્દ્ર શાહ",
+          "શ્રી પન્નાલાલ પટેલ",
+          "શ્રી ઉમાશંકર જોશી",
+          "શ્રી રઘુવીર ચૌધરી"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 65,
+        "section": "general_knowledge",
+        "question": "ગાંધીજી દ્વારા ભારતમાં પ્રથમ આમરણ ઉપવાસ ક્યારે અને ક્યાં કરવામાં આવેલ?",
+        "options": [
+          "ઈ.સ. 1916માં લખનૌ",
+          "ઈ.સ. 1918માં અમદાવાદ",
+          "ઈ.સ. 1930માં દાંડી",
+          "ઈ.સ. 1932માં પૂણે"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 66,
+        "section": "general_knowledge",
+        "question": "'કથકલી' નૃત્ય મુખ્યત્વે કયા રાજ્ય સાથે સંકળાયેલ છે?",
+        "options": [
+          "કેરળ",
+          "આંધ્રપ્રદેશ",
+          "ઉત્તરપ્રદેશ",
+          "ઓડિસ્સા"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 67,
+        "section": "general_knowledge",
+        "question": "કઈ ગુજરાતી અભિનેત્રીને 70માં રાષ્ટ્રીય ફિલ્મ એવોર્ડમાં શ્રેષ્ઠ અભિનેત્રીનો પુરસ્કાર મળ્યો?",
+        "options": [
+          "શ્રદ્ધા ડાંગર",
+          "માનસી પારેખ",
+          "ઈશા કંસારા",
+          "સરિતા જોશી"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 68,
+        "section": "gujarati",
+        "question": "ગુજરાતી સાહિત્ય પરિષદનું મુખપત્ર કયા નામે પ્રસિદ્ધ થાય છે?",
+        "options": [
+          "શબ્દ સૃષ્ટિ",
+          "ડંડિયો",
+          "પરબ",
+          "કુમાર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 69,
+        "section": "general_knowledge",
+        "question": "ગુજરાતમાં કુલ કેટલા રાષ્ટ્રીય ઉદ્યાનો (National Parks) આવેલા છે?",
+        "options": [
+          "2",
+          "4",
+          "6",
+          "8"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 70,
+        "section": "general_knowledge",
+        "question": "ગુજરાત રાજ્યમાં વર્ષ 2011 ની વસ્તીગણતરી મુજબ નીચે પૈકી કયા જિલ્લામાં સ્ત્રી-પુરુષ જાતિપ્રમાણ સૌથી વધુ છે?",
+        "options": [
+          "તાપી",
+          "નર્મદા",
+          "ડાંગ",
+          "પંચમહાલ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 71,
+        "section": "gsrtc_rules",
+        "question": "કઈ રેખાઓ મતલબ કોઈ પણ સંજોગોમાં લેન બદલવાની કે ઓવરટેક કરવાની અનુમતિ નથી તેમ થાય છે? (રદ થયેલ પ્રશ્ન - Grace Mark)",
+        "options": [
+          "પીળા રંગની તુટક રેખા",
+          "પીળા રંગની સમગ્ર એક રેખા",
+          "પીળા રંગની બે સળંગ રેખા",
+          "સફેદ રંગની તુટક રેખા"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 72,
+        "section": "gsrtc_rules",
+        "question": "માર્ગ અકસ્માત પીડિતને મદદરૂપ થનાર માટે ચોક્કસ કયો શબ્દ વપરાય છે?",
+        "options": [
+          "ગુડ સમેરિટન",
+          "ગુડ હેલ્પર",
+          "ગુડ ફ્રેન્ડ",
+          "ગુડ વોરિયર"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 73,
+        "section": "gsrtc_rules",
+        "question": "જો કિલોમીટર સ્ટોનની ઉપરના ભાગે પીળો અને નીચેના ભાગે સફેદ રંગ હોય તો તે કયા પ્રકારનો રોડ હશે?",
+        "options": [
+          "નેશનલ હાઈવે",
+          "સ્ટેટ હાઈવે",
+          "જિલ્લા રોડ",
+          "ગ્રામ્ય રોડ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 74,
+        "section": "gsrtc_rules",
+        "question": "રોડ સેફ્ટીને ધ્યાને લઈ ગુજરાત સરકાર દ્વારા વર્ષ ______ ના રોજ ગુજરાત રોડ સેફ્ટી ઓથોરિટીની સ્થાપના કરવામાં આવેલ છે.",
+        "options": [
+          "2014",
+          "2016",
+          "2018",
+          "2022"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 75,
+        "section": "gsrtc_rules",
+        "question": "નેશનલ રોડ સેફ્ટી પ્રોટોકોલ મુજબ સામાન્ય રીતે નેશનલ હાઈવે પર બ્લેક સ્પોટ એ અંદાજિત _____ લાંબો વિસ્તાર હોય છે.",
+        "options": [
+          "100 મીટર",
+          "300 મીટર",
+          "500 મીટર",
+          "1 કિલોમીટર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 76,
+        "section": "gsrtc_rules",
+        "question": "નેશનલ હાઈવે પર બ્લેક સ્પોટ ઓળખવા માટે તે સ્થાન પર પાછલા સતત _____ વર્ષમાં કુલ પાંચ રોડ એક્સિડન્ટ જેમાં ગંભીર કે જીવલેણ અકસ્માત થયેલ હોય અથવા દસ મૃત્યુ થયેલ હોવા જોઈએ.",
+        "options": [
+          "1 વર્ષ",
+          "2 વર્ષ",
+          "3 વર્ષ",
+          "5 વર્ષ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 77,
+        "section": "gsrtc_rules",
+        "question": "રોડ ડીલીનેએટર (Delineator)નો મુખ્ય હેતુ શું હોય છે?",
+        "options": [
+          "ટ્રાફિક ઓછો કરવો",
+          "રોડ સુશોભન",
+          "રોડ પર થતું બાંધકામ દર્શાવવા",
+          "વાહનચાલકને રોડ ગોઠવણી અંગે માહિતગાર કરવા"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 78,
+        "section": "gsrtc_rules",
+        "question": "24 x 7 નેશનલ હાઇવે હેલ્પલાઇન નંબર ______ છે.",
+        "options": [
+          "1031",
+          "1033",
+          "1092",
+          "1098"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 79,
+        "section": "gsrtc_rules",
+        "question": "ભારત સરકાર દ્વારા વાહન અને લાઇસન્સને લગતી બધી મુખ્ય સેવાઓ એક કેન્દ્રીય પ્લેટફોર્મ ______ પર લોન્ચ કરવામાં આવેલ છે.",
+        "options": [
+          "પરિવહન સેવા",
+          "મુસાફર સેવા",
+          "સાથી સેવા",
+          "સંચાર સેવા"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 80,
+        "section": "gsrtc_rules",
+        "question": "ચેતવણી દર્શક ચિહ્નો તે રોડ પર ______ આકારમાં હોય છે.",
+        "options": [
+          "લાલ રંગના વર્તુળમાં",
+          "વાદળી રંગના ચોકઠામાં",
+          "લાલ રંગના ઊભા ત્રિકોણમાં",
+          "વાદળી રંગના વર્તુળમાં"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 81,
+        "section": "gujarati",
+        "question": "નીચે પૈકી કઈ જોડણી અયોગ્ય છે?",
+        "options": [
+          "મુમૂર્ષા",
+          "યુયુત્સા",
+          "કીર્તિકાર્ડ",
+          "પિરામિડ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 82,
+        "section": "gujarati",
+        "question": "'મટકું માર્યા વગર જોવું' અર્થ માટે યોગ્ય શબ્દ સમૂહ કયો?",
+        "options": [
+          "મુખત્યાર",
+          "પુષ્પધન્વા",
+          "નયનબાણ",
+          "અનિમેષ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 83,
+        "section": "gujarati",
+        "question": "'ઝોળના પાણીએ નાહવું' રૂઢિપ્રયોગનો અર્થ જણાવો.",
+        "options": [
+          "ખૂબ ફાયદો થવો",
+          "મહામુશ્કેલી ટળવી",
+          "ઈર્ષ્યા થવી",
+          "છેતરાવવું"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 84,
+        "section": "gujarati",
+        "question": "સંધિ જોડો: ભાસ્ + કર",
+        "options": [
+          "ભાસ્કર",
+          "ભાંસ્કર",
+          "ભાસ્કર",
+          "ભાષ્કર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 85,
+        "section": "gujarati",
+        "question": "'અસત્યો માંહેથી ! પ્રભુ ! પરમ સત્યે તું લઈ જા' કયો છંદ છે?",
+        "options": [
+          "પૃથ્વી",
+          "શાર્દુલ વિક્રીડિત",
+          "મંદાક્રાંતા",
+          "શિખરિણી"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 86,
+        "section": "gujarati",
+        "question": "નીચે પૈકી કયો છંદ માત્રામેળ છંદ છે?",
+        "options": [
+          "દોહરો",
+          "પૃથ્વી",
+          "માલિની",
+          "વસંતતિલકા"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 87,
+        "section": "gujarati",
+        "question": "અલંકાર ઓળખાવો: 'પ્રેમ પદાર્થ અમે પામીએ, વામીએ જનમ મરણ જંજાળ'",
+        "options": [
+          "વર્ણાનુપ્રાસ",
+          "યમક",
+          "અંત્યાનુપ્રાસ",
+          "આંતરપ્રાસ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 88,
+        "section": "gujarati",
+        "question": "વાક્ય પ્રકાર ઓળખાવો: તેનાથી જોરથી હસાયું.",
+        "options": [
+          "કર્તરી",
+          "ભાવે",
+          "કર્મણિ",
+          "પ્રેરક"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 89,
+        "section": "gujarati",
+        "question": "વિરોધી શબ્દ ઓળખાવો: ગાફેલ",
+        "options": [
+          "સુલભ",
+          "સાવધ",
+          "સાકાર",
+          "સંશય"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 90,
+        "section": "gujarati",
+        "question": "અલગ અર્થ પડતો શબ્દ ઓળખાવો:",
+        "options": [
+          "પંકજ",
+          "સરોજ",
+          "કાલિંદી",
+          "નલિન"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 91,
+        "section": "english",
+        "question": "Which of the following is the correct passive voice form of the sentence? 'He writes a letter everyday.'",
+        "options": [
+          "A letter is written by him everyday.",
+          "A letter was written by him everyday.",
+          "A letter will be written by him everyday.",
+          "A letter is being written by him everyday."
+        ],
+        "answer": 0
+      },
+      {
+        "id": 92,
+        "section": "english",
+        "question": "Choose the correct indirect speech form of the sentence: She said, 'I am going to the market.'",
+        "options": [
+          "She said that she is going to the market.",
+          "She said that she was going to the market.",
+          "She said that she has gone to the market.",
+          "She says that she was going to the market."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 93,
+        "section": "english",
+        "question": "Fill the blank: 'By the time you arrive, we ______ already left.'",
+        "options": [
+          "have",
+          "had",
+          "will have",
+          "will"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 94,
+        "section": "english",
+        "question": "Fill the blank: If I had known about the party, I ______ gone. (રદ થયેલ પ્રશ્ન - Grace Mark)",
+        "options": [
+          "would have",
+          "will have",
+          "would",
+          "had"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 95,
+        "section": "english",
+        "question": "By the time he arrives, we ______ for an hour.",
+        "options": [
+          "will wait",
+          "have waited",
+          "had been waiting",
+          "will have been waiting"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 96,
+        "section": "english",
+        "question": "Choose the correct form of the sentence: I have ...... friends in my class.",
+        "options": [
+          "many",
+          "much",
+          "a lot",
+          "few"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 97,
+        "section": "english",
+        "question": "Which word is the antonym of 'generous'?",
+        "options": [
+          "kind",
+          "selfish",
+          "caring",
+          "thoughtful"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 98,
+        "section": "english",
+        "question": "What does the phrasal verb 'give up' mean?",
+        "options": [
+          "to donate something",
+          "to stop trying",
+          "to start something new",
+          "to celebrate"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 99,
+        "section": "english",
+        "question": "...... sun rises in the East. Choose correct article.",
+        "options": [
+          "A",
+          "An",
+          "The",
+          "No article needed"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 100,
+        "section": "english",
+        "question": "Which of the following sentence uses the correct pronoun?",
+        "options": [
+          "Everyone must bring their own pencil.",
+          "The children played with its toys.",
+          "She gave me my book to him.",
+          "The teacher explained the lesson to they."
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "shift_2021",
+    "title": "કંડક્ટર પેપર (05-09-2021)",
+    "subtitle": "GSRTC Conductor Official Paper (સંપૂર્ણ 100 પ્રશ્નો)",
+    "date": "05-09-2021",
+    "duration_mins": 120,
+    "total_marks": 100,
+    "questions": [
+      {
+        "id": 1,
+        "section": "gujarati",
+        "question": "\"સૂરજ\" શબ્દનું સાચું ધ્વનિરૂપ કયું છે?",
+        "options": [
+          "સ્ + ઉ + ર્ + અ + જ્ + અ",
+          "સ્ + ઊ + ર્ + અ + જ્ + અ",
+          "સ્ + ઊ + ર્ + અ + જ્",
+          "સ્ + ઉ + ર્ + અ + જ્"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 2,
+        "section": "gujarati",
+        "question": "\"ચા પાણી\" કયો સમાસ છે?",
+        "options": [
+          "શ્લેષ",
+          "દ્વંદ્વ",
+          "દ્વિગુ",
+          "તત્પુરુષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 3,
+        "section": "gujarati",
+        "question": "આપેલા વાક્યોમાંથી સાચી રીતે વિરામ ચિહ્નો મૂકેલું વાક્ય કયું?",
+        "options": [
+          "જીવનમાં, ત્રણ વસ્તુ જરૂરી છે. હવા, પાણી, અને ખોરાક.",
+          "જીવનમાં ત્રણ, વસ્તુ જરૂરી છે; હવા-પાણી અને ખોરાક.",
+          "જીવનમાં ત્રણ વસ્તુ જરૂરી છે: હવા, પાણી, અને ખોરાક.",
+          "જીવનમાં ત્રણ વસ્તુ જરૂરી છે: હવા, પાણી અને ખોરાક."
+        ],
+        "answer": 3
+      },
+      {
+        "id": 4,
+        "section": "gujarati",
+        "question": "\"કોઈની પોવાયેલી પણ આ નીટ હોય.\" લીટી દોરેલો શબ્દ કયું સર્વનામ છે? (રદ થયેલ)",
+        "options": [
+          "પ્રશ્નવાચક સર્વનામ",
+          "સાપેક્ષ સર્વનામ",
+          "અનિશ્ચિત સર્વનામ",
+          "દર્શક સર્વનામ"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 5,
+        "section": "gujarati",
+        "question": "\"પરોણો\" આ શબ્દ નીચેનામાંથી કોનો સમાનાર્થી શબ્દ છે?",
+        "options": [
+          "અતિથિ",
+          "કમળ",
+          "ચતુર",
+          "ઘોડો"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 6,
+        "section": "gujarati",
+        "question": "'કેસરીસિંઘ સવારમાં વહેલા ફરવા નીકળે.' આ વાક્યનું રેખાંકિત પદ કઈ વિભક્તિ છે? (રદ થયેલ)",
+        "options": [
+          "ષષ્ઠી વિભક્તિ",
+          "સપ્તમી વિભક્તિ",
+          "દ્વિતીયા વિભક્તિ",
+          "પંચમી વિભક્તિ"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 7,
+        "section": "gujarati",
+        "question": "નીચેનામાંથી સાચી જોડણીવાળા શબ્દો કયા છે? (1. ઉહાપોહ 2. ગુપચુપ 3. જુગાર 4. હકૂમત 5. અધિનિયમ 6. વિશેષાધિકાર)",
+        "options": [
+          "2, 6",
+          "1, 3, 5",
+          "3, 4, 6",
+          "2, 5, 6"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 8,
+        "section": "gujarati",
+        "question": "નીચે આપેલા વિરોધાર્થી શબ્દોના જોડકાંઓમાં કયું જોડકું ખોટું છે?",
+        "options": [
+          "ખાંડ - ગોળ",
+          "કબીર - કંચન",
+          "ઓળખ - અંત",
+          "કંકોતરી - કાળોતરી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 9,
+        "section": "gujarati",
+        "question": "\"છકડો જકાતનાકે જ ઊભો રહી જાય.\" આ વાક્યમાં 'નિપાત' શોધો.",
+        "options": [
+          "છકડો",
+          "રહી",
+          "જાય",
+          "જ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 10,
+        "section": "gujarati",
+        "question": "નીચેનામાંથી કયો છંદ 17 અક્ષરનો નથી?",
+        "options": [
+          "પૃથ્વી",
+          "સ્રગ્ધરા",
+          "હરિણી",
+          "મંદાક્રાંતા"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 11,
+        "section": "english",
+        "question": "Identify the sentence with wrongly use of article.",
+        "options": [
+          "The Mahesh is a good boy",
+          "An S.T. Bus",
+          "The Sun rises in the east",
+          "This is a horse"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 12,
+        "section": "english",
+        "question": "Arrange the jumbled parts to make meaningful sentence: 'Your purse?/did you/where/find'",
+        "options": [
+          "Did you find your purse where?",
+          "Where your purse did you find?",
+          "Where you find did your purse?",
+          "Where did you find your purse?"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 13,
+        "section": "english",
+        "question": "Fill in the blank: Did you help your parents ______ home?",
+        "options": [
+          "in",
+          "at",
+          "with",
+          "her"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 14,
+        "section": "english",
+        "question": "Fill in the blank with simple future tense: '______ you ______ with me tomorrow?'",
+        "options": [
+          "Would, be coming",
+          "Shall, come",
+          "Will, come",
+          "Should, come"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 15,
+        "section": "english",
+        "question": "Turn into indirect speech: 'I say to father, 'I am working hard''",
+        "options": [
+          "I said to father that I am working hard",
+          "I say to father that I am working hard",
+          "I said to father that I was working hard",
+          "I tell father that I am working hard"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 16,
+        "section": "english",
+        "question": "Find out collective noun from the following:",
+        "options": [
+          "Jury",
+          "Judge",
+          "Justice",
+          "Jamnagar"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 17,
+        "section": "english",
+        "question": "Fill in the blank: Gold is ______ than silver.",
+        "options": [
+          "Costly",
+          "Costlier",
+          "Heavy",
+          "Shiny"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 18,
+        "section": "english",
+        "question": "What is the antonym of 'accept'?",
+        "options": [
+          "Expect",
+          "React",
+          "Reject",
+          "Acertain"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 19,
+        "section": "english",
+        "question": "Turn into active voice: 'Let the weak not be insulted'.",
+        "options": [
+          "Please do not insult the weak",
+          "Do not insult the weak",
+          "The weak should not be insulted",
+          "One should not insult weak"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 20,
+        "section": "english",
+        "question": "Fill in the blank: His master ______ an explanation of his conduct.",
+        "options": [
+          "Called off",
+          "Called up",
+          "Called for",
+          "Called on"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 21,
+        "section": "maths_reasoning",
+        "question": "ખાલી જગ્યા પૂરો: 441, 481, 529, _____, 625 (રદ થયેલ)",
+        "options": [
+          "576",
+          "556",
+          "536",
+          "516"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 22,
+        "section": "maths_reasoning",
+        "question": "ખાલી જગ્યા પૂરો: 8, 27, 64, _____, 343",
+        "options": [
+          "72, 96",
+          "64, 125",
+          "125, 216",
+          "216, 512"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 23,
+        "section": "maths_reasoning",
+        "question": "1 કિલોમીટર એટલે કેટલા સેન્ટિમીટર થાય?",
+        "options": [
+          "10,00,000 સેન્ટિમીટર",
+          "1,00,000 સેન્ટિમીટર",
+          "10,000 સેન્ટિમીટર",
+          "1,000 સેન્ટિમીટર"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 24,
+        "section": "maths_reasoning",
+        "question": "પાંચ બાળકોની સરેરાશ ઉંમર 24 વર્ષ છે. એક નવા બાળકનો ઉમેરો થતા સરેરાશ ઉંમર 22 વર્ષ થાય છે. તો નવા બાળકની ઉંમર કેટલી હશે?",
+        "options": [
+          "26 વર્ષ",
+          "22 વર્ષ",
+          "16 વર્ષ",
+          "12 વર્ષ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 25,
+        "section": "maths_reasoning",
+        "question": "એક સંખ્યાના 1/4 ભાગનો 2/5 ભાગ 36 થાય છે તો તે સંખ્યા કઈ હશે?",
+        "options": [
+          "360",
+          "300",
+          "240",
+          "180"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 26,
+        "section": "maths_reasoning",
+        "question": "પિતાની ઉંમર પુત્રની ઉંમર કરતા ત્રણ ગણી છે, જો બંનેની ઉંમરનો સરવાળો 56 વર્ષ થતો હોય તો પિતાની ઉંમર કેટલી હશે?",
+        "options": [
+          "14 વર્ષ",
+          "42 વર્ષ",
+          "36 વર્ષ",
+          "65 વર્ષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 27,
+        "section": "maths_reasoning",
+        "question": "ટાંકીમાં પ્રથમ નળ ચાલુ કરવાથી 30 મિનિટમાં, બીજાથી 20 મિનિટમાં અને ત્રીજાથી 60 મિનિટમાં ભરાય છે. ત્રણેય સાથે ચાલુ કરતાં ટાંકી ક્યારે ભરાશે?",
+        "options": [
+          "20 મિનિટ",
+          "15 મિનિટ",
+          "10 મિનિટ",
+          "6 મિનિટ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 28,
+        "section": "maths_reasoning",
+        "question": "એક વસ્તુને રૂા. 240 માં વેચતાં 10% ખોટ જાય છે. જો 20% નફો મેળવવો હોય તો તે વસ્તુ કેટલામાં વેચવી?",
+        "options": [
+          "રૂા. 240",
+          "રૂા. 270",
+          "રૂા. 300",
+          "રૂા. 320"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 29,
+        "section": "maths_reasoning",
+        "question": "એક રકમનાં 5% સાદા વ્યાજના પાંચમા વર્ષ અને છઠ્ઠા વર્ષના વ્યાજમાં રૂા. 42 નો તફાવત છે. મુદ્દલ કેટલી હશે?",
+        "options": [
+          "8400 રૂા.",
+          "840 રૂા.",
+          "7600 રૂા.",
+          "12000 રૂા."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 30,
+        "section": "maths_reasoning",
+        "question": "ખાલી જગ્યા પૂરો: 3/8 - 5/32 = ______",
+        "options": [
+          "0 (શૂન્ય)",
+          "2",
+          "4",
+          "16"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 31,
+        "section": "gsrtc_rules",
+        "question": "GSRTC ની સ્થાપના ક્યારે થઇ હતી?",
+        "options": [
+          "15 ઑગસ્ટ, 1947",
+          "1 મે, 1956",
+          "1 જૂન, 1960",
+          "1 મે, 1960"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 32,
+        "section": "gsrtc_rules",
+        "question": "GSRTC માટે નીચેનામાંથી કયું સાચું છે?",
+        "options": [
+          "16 ડિવિઝન, 125 ડેપો, 226 બસ સ્ટેશન",
+          "15 ડિવિઝન, 125 ડેપો, 226 બસ સ્ટેશન",
+          "16 ડિવિઝન, 130 ડેપો, 226 બસ સ્ટેશન",
+          "16 ડિવિઝન, 125 ડેપો, 220 બસ સ્ટેશન"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 33,
+        "section": "gsrtc_rules",
+        "question": "GSRTC માં ઑનલાઇન મોબાઇલ બુકીંગ માટે રિઝર્વેશન ચાર્જ કેટલો ચૂકવવો પડે છે?",
+        "options": [
+          "ત્રણ રૂપિયા",
+          "ચાર રૂપિયા",
+          "પાંચ રૂપિયા",
+          "સાત રૂપિયા"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 34,
+        "section": "gsrtc_rules",
+        "question": "GSRTC માં એડવાન્સ બુકીંગ કેન્સલ કરાવવું હોય તો 6-60 દિવસ વચ્ચે કેન્સલેશન ચાર્જ મૂળ ભાડાના કેટલા ટકા લાગશે?",
+        "options": [
+          "25%",
+          "15%",
+          "20%",
+          "5%"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 35,
+        "section": "gsrtc_rules",
+        "question": "એક વ્યક્તિ વધુમાં વધુ કેટલી સીટનું ઇ-ટીકીટથી બુકીંગ કરી શકશે?",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "ગમે તેટલી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 36,
+        "section": "gsrtc_rules",
+        "question": "GSRTC નો ટોલ-ફ્રી નંબર કયો છે?",
+        "options": [
+          "1800 233 666666",
+          "1800 234 56666",
+          "1800 233 56666",
+          "1800 233 555666"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 37,
+        "section": "gsrtc_rules",
+        "question": "કેટલા સ્ટેજ પછી અડધા સ્ટેજની ગણતરી ટીકીટ માટે લક્ષમાં લેવાની રહેશે નહિ?",
+        "options": [
+          "ત્રીજા",
+          "પાંચ",
+          "આઠ",
+          "દસ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 38,
+        "section": "gsrtc_rules",
+        "question": "સ્ટેજ દીઠ ભાડું રૂા. 8.50, 14 સ્ટેજની મુસાફરી માટે ચાર પુખ્ત મુસાફરોને ચૂકવવાની થતી ભાડાની રકમ કેટલી?",
+        "options": [
+          "119 રૂા.",
+          "238 રૂા.",
+          "476 રૂા.",
+          "378 રૂા."
+        ],
+        "answer": 2
+      },
+      {
+        "id": 39,
+        "section": "gsrtc_rules",
+        "question": "એક જ ગ્રુપના ત્રણ મુસાફરો પાસે કુલ 40 કિ.ગ્રા. લગેજ છે. આઠ સ્ટેજની મુસાફરી માટે કેટલી લગેજની રકમ ચૂકવવી પડશે?",
+        "options": [
+          "400 રૂા.",
+          "240 રૂા.",
+          "640 રૂા.",
+          "શૂન્ય"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 40,
+        "section": "gsrtc_rules",
+        "question": "એક 5 વર્ષથી નાનું બાળક, બે 12 વર્ષથી નાના બાળક અને ત્રણ પુખ્ત વ્યક્તિ સ્ટેજ દીઠ રૂા. 13 પ્રમાણે 4 સ્ટેજની મુસાફરી કરે તો ટિકિટ રકમ?",
+        "options": [
+          "260 રૂા.",
+          "208 રૂા.",
+          "312 રૂા.",
+          "364 રૂા."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 41,
+        "section": "first_aid",
+        "question": "નાની મોટી ઈજા થાય ત્યારે શેમાં બોળેલું રૂ ઘા પર ચોંટાડી દેવું?",
+        "options": [
+          "ટિન્ચર બેન્ઝોઇન",
+          "ફિનાઇલ",
+          "આયોડીન",
+          "ઓ.આર.એસ."
+        ],
+        "answer": 0
+      },
+      {
+        "id": 42,
+        "section": "first_aid",
+        "question": "કાર્ડિયાક મસાજ (હૃદય-મર્દન) કરવા છાતીના મધ્યમાં એક મિનિટમાં કેટલા કંપનના દરે કરવી?",
+        "options": [
+          "45",
+          "60",
+          "80",
+          "100"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 43,
+        "section": "first_aid",
+        "question": "હાથની ધમનીમાંથી રુધિર સ્ત્રાવ થાય ત્યારે તે અટકાવવામાં ક્યાં દબાણ આપવું જોઇએ?",
+        "options": [
+          "ઘા ની ઉપલી બાજુએ",
+          "દ્વિમસ્તક સ્નાયુ પાસે",
+          "ત્રિમસ્તક સ્નાયુ પાસે",
+          "ગળાના હાડકાં આગળ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 44,
+        "section": "gsrtc_rules",
+        "question": "નીચેનામાંથી કઈ કંડક્ટરની ફરજો પૈકી નથી?",
+        "options": [
+          "ભાડા વગર કોઈને બેસવા નહીં દેવું.",
+          "કામ પર કોઈ વ્યસન કરીને નહીં આવે.",
+          "પેસેન્જર કેપેસિટીને સાચવવાની કાળજી રાખવાની જવાબદારી નથી.",
+          "ભાડું આપ્યા પછી તરત જ ટીકીટ આપશે."
+        ],
+        "answer": 2
+      },
+      {
+        "id": 45,
+        "section": "gsrtc_rules",
+        "question": "નીચેનામાંથી કઈ કંડક્ટરની ફરજોમાંથી નથી?",
+        "options": [
+          "રૂટ પર આવતાં બસ સ્ટોપ પર બેલ મારી બસ થોભાવવી.",
+          "અકસ્માત થાય તો ઈજા પામેલા મુસાફરોને દવાખાને ના પહોંચાડવા.",
+          "એડવાન્સ બુકીંગ વાળાચુક્યા મુસાફરોને બેસાડવા.",
+          "ટીકીટો મુજબના નાણાંનો હિસાબ ડેપો ખાતે જમા કરાવવો."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 46,
+        "section": "gsrtc_rules",
+        "question": "જો બસને અકસ્માત થાય તો અકસ્માત અંગેની પોલિસ ફરિયાદ કોણ નોંધાવશે?",
+        "options": [
+          "ડ્રાઈવર",
+          "કંડક્ટર",
+          "ડેપો મેનેજર",
+          "કન્ટ્રોલ મેનેજર"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 47,
+        "section": "gsrtc_rules",
+        "question": "ટિકીટ લીધા વગર મુસાફરી અને કંડક્ટર સંબંધમાં ફરજમાં કસૂરવાર માટેની શિક્ષા MV Act 1988 ની કઈ કલમમાં છે?",
+        "options": [
+          "કલમ-162",
+          "કલમ-177",
+          "કલમ-178",
+          "કલમ-119"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 48,
+        "section": "gsrtc_rules",
+        "question": "કલમ-184 મુજબ - ધી મોટર વ્હીકલ એક્ટની કઈ જોગવાઈ સાચી છે?",
+        "options": [
+          "મહિલા દ્વારા વાહન હંકારવું",
+          "15 વર્ષથી ઓછી ઉંમરની વ્યક્તિએ વાહન હંકારવું",
+          "માનસિક અસ્વસ્થ વ્યક્તિએ વાહન હંકારવું",
+          "બેફામ કે જોખમી રીતે વાહન ચલાવવું"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 49,
+        "section": "gsrtc_rules",
+        "question": "બિનસલામત રેલ્વે લેવલ ક્રોસિંગે અમુક સાવચેતી લેવાની ફરજો અંગે કઈ કલમમાં ઉલ્લેખ છે?",
+        "options": [
+          "કલમ-131",
+          "કલમ-127",
+          "કલમ-184",
+          "કલમ-183"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 50,
+        "section": "gsrtc_rules",
+        "question": "હોર્ન પ્રતિબંધિત વિસ્તારમાં હોર્ન વગાડવા બદલ શિક્ષાની જોગવાઈ કઈ કલમમાં છે?",
+        "options": [
+          "કલમ-185",
+          "કલમ-180",
+          "કલમ-194-બી",
+          "કલમ-194-એફ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 51,
+        "section": "computer",
+        "question": "IBM એટલે ...",
+        "options": [
+          "International Business Mark",
+          "International Business Machine",
+          "International Binary Mark",
+          "International Board Mark"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 52,
+        "section": "computer",
+        "question": "સ્થાયી RAM ને સામાન્ય રીતે ______ તરીકે ઓળખવામાં આવે છે.",
+        "options": [
+          "Static RAM",
+          "Standard RAM",
+          "Simple RAM",
+          "Single RAM"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 53,
+        "section": "computer",
+        "question": "ઓપ્ટીકલ ફાઇબર્સનો મહત્તમ ઉપયોગ શેમાં થાય છે?",
+        "options": [
+          "Software",
+          "Network",
+          "Hardware",
+          "ઉપરોક્ત પૈકી એક પણ નહીં"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 54,
+        "section": "computer",
+        "question": "UPS નું આખું નામ શું છે?",
+        "options": [
+          "United Power Supply",
+          "Uninterruptible Pin Sky",
+          "United Post Supply",
+          "Uninterruptible Power Supply"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 55,
+        "section": "computer",
+        "question": "નીચેના પૈકી નાનામાં નાનો યુનિટ કયો છે?",
+        "options": [
+          "KB",
+          "MB",
+          "Bit",
+          "Byte"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 56,
+        "section": "computer",
+        "question": "લેઝર પ્રિન્ટરમાં વપરાતો પાવડર જેવો પદાર્થ સંગ્રહ કરતું યુનિટ શું કહેવાય?",
+        "options": [
+          "ટોનર",
+          "હેમર",
+          "પ્રિન્ટ હેડ",
+          "ડિસ્પ્લે ટર્મિનલ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 57,
+        "section": "computer",
+        "question": "નીચેના પૈકી કયું DTP પેકેજ છે?",
+        "options": [
+          "Excel",
+          "SPSS",
+          "Word",
+          "PageMaker"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 58,
+        "section": "computer",
+        "question": "ડિસ્ક / કૉમ્પ્યુટરને ફોર્મેટ કરવાથી ............",
+        "options": [
+          "બધી નકામી માહિતી ભૂસાઈ જાય છે.",
+          "બધી માહિતી ભૂસાઈ જાય છે.",
+          "બધી માહિતીની નકલ થઇ જાય છે.",
+          "નકામી માહિતીની નકલ થાય છે."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 59,
+        "section": "computer",
+        "question": "1 Kilo Byte (KB) એટલે કેટલા Bytes થાય?",
+        "options": [
+          "1000",
+          "1024",
+          "1048",
+          "1090"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 60,
+        "section": "computer",
+        "question": "સામાન્ય રીતે કી-બોર્ડમાં કેટલી ફંક્શન કી હોય છે?",
+        "options": [
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 61,
+        "section": "computer",
+        "question": "ફાઈલ અથવા ફોલ્ડર ડીલીટ કર્યા પછી તે ______ જગ્યાએ જાય છે?",
+        "options": [
+          "માય કૉમ્પ્યુટર",
+          "રિસાયકલ બિન",
+          "ડૉક્યુમેન્ટ",
+          "ડેસ્કટોપ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 62,
+        "section": "computer",
+        "question": "MS Word એ કયા સોફ્ટવેરનો ભાગ છે?",
+        "options": [
+          "MS Windows",
+          "MS Office",
+          "(A) અને (B) બંને",
+          "ઉપરોક્ત પૈકી એક પણ નહીં"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 63,
+        "section": "computer",
+        "question": "MS Word માં ટાઈપ કરેલી માહિતીમાં જરૂરી ફેરફાર કરવાની પ્રક્રિયાને ...... કહેવાય છે?",
+        "options": [
+          "Editing",
+          "Writing",
+          "Setting",
+          "Re-writing"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 64,
+        "section": "computer",
+        "question": "MS Word ના ટેબલમાં રહેલ આડી હરોળને શું કહેવાય છે?",
+        "options": [
+          "રો (Row)",
+          "કૉલમ (Column)",
+          "સેલ (Cell)",
+          "પેરેગ્રાફ (Paragraph)"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 65,
+        "section": "computer",
+        "question": "ડૉક્યુમેન્ટમાં Header અને Footer કયા મોડમાં જોવા મળે છે?",
+        "options": [
+          "Print layout",
+          "Normal layout",
+          "Grid layout",
+          "Save layout"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 66,
+        "section": "computer",
+        "question": "MS Excel ની એક શીટમાં કુલ કેટલાં કૉલમ હોય છે (Excel 2003)?",
+        "options": [
+          "254",
+          "255",
+          "256",
+          "258"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 67,
+        "section": "computer",
+        "question": "MS Excel માં ગાણિતિક પ્રક્રિયા કરવા માટે શરૂઆતમાં કયો સિમ્બોલ મૂકવામાં આવે છે?",
+        "options": [
+          "?",
+          "-<",
+          ">",
+          "="
+        ],
+        "answer": 3
+      },
+      {
+        "id": 68,
+        "section": "computer",
+        "question": "પાવર પોઇન્ટ એપ્લિકેશનમાં જે પેજ દેખાય છે તેને શું કહે છે?",
+        "options": [
+          "Sheet",
+          "Slide",
+          "Book",
+          "Page"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 69,
+        "section": "computer",
+        "question": "પાવર પોઇન્ટ એપ્લિકેશનમાં કાર્ટૂન દાખલ કરવા માટે કયા ઓપ્શનની જરૂર પડે છે?",
+        "options": [
+          "Clip Art",
+          "Word Art",
+          "Clip Box",
+          "Word Cliping"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 70,
+        "section": "computer",
+        "question": "પાવર પોઇન્ટ એપ્લિકેશનનો મુખ્યત્વે કયા કામમાં ઉપયોગ થાય છે?",
+        "options": [
+          "ગાણિતિક",
+          "શાબ્દિક",
+          "પ્રેઝન્ટેશન",
+          "ચિત્રકામ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 71,
+        "section": "general_knowledge",
+        "question": "નીચેનામાંથી કઈ નદીનું ઉદ્ભવસ્થાન રાજસ્થાનમાં નથી?",
+        "options": [
+          "મહી",
+          "સાબરમતી",
+          "બનાસ",
+          "મેઘો"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 72,
+        "section": "general_knowledge",
+        "question": "નીચેનામાંથી કઈ નદી કચ્છના નાના રણમાં સમાઈ જાય છે?",
+        "options": [
+          "કાળુભાર",
+          "મચ્છુ",
+          "ઘેલો",
+          "ભાદર"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 73,
+        "section": "general_knowledge",
+        "question": "'જાસોરનો ડુંગર' કયા જિલ્લામાં આવેલ છે?",
+        "options": [
+          "પાટણ",
+          "મહેસાણા",
+          "બનાસકાંઠા",
+          "ભાવનગર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 74,
+        "section": "general_knowledge",
+        "question": "હરણોની સુરક્ષા માટેનું સંશોધન કેન્દ્ર (GEER Foundation) ક્યાં આવેલું છે?",
+        "options": [
+          "જૂનાગઢ",
+          "ભાવનગર",
+          "ગીર-સોમનાથ",
+          "ગાંધીનગર"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 75,
+        "section": "general_knowledge",
+        "question": "\"ઇન્દ્રોડાપાર્ક\" નેચરલ પાર્ક ક્યાં આવેલું છે?",
+        "options": [
+          "વેળાવદર",
+          "ગાંધીનગર",
+          "વાંસદા",
+          "ધારી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 76,
+        "section": "general_knowledge",
+        "question": "નીચેનામાંથી કયા જીલ્લામાંથી કર્કવૃત્ત પસાર થતું નથી? (રદ થયેલ)",
+        "options": [
+          "સુરેન્દ્રનગર",
+          "ગાંધીનગર",
+          "અરવલ્લી",
+          "મહિસાગર"
+        ],
+        "answer": -1
+      },
+      {
+        "id": 77,
+        "section": "general_knowledge",
+        "question": "ગુજરાતમાં યહુદી ધર્મનું ધર્મસ્થાન ક્યાં આવેલું છે?",
+        "options": [
+          "મીરા-દાતાર, ઉનાવા",
+          "ખંભોળજ, આણંદ",
+          "ખમાસા, અમદાવાદ",
+          "ઉદવાડા, વલસાડ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 78,
+        "section": "general_knowledge",
+        "question": "પ્રાચીન સમયમાં ગુજરાતમાં કઈ વિશ્વ પ્રસિદ્ધ વિદ્યાપીઠ આવેલ હતી?",
+        "options": [
+          "નાલંદા વિદ્યાપીઠ",
+          "વલભી વિદ્યાપીઠ",
+          "તક્ષશીલા વિદ્યાપીઠ",
+          "ગુજરાત વિદ્યાપીઠ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 79,
+        "section": "general_knowledge",
+        "question": "'ત્રિભુવનગંડ', 'સિદ્ધચક્રવર્તી', 'અવંતિનાથ' જેવા બિરુદ કયા સમ્રાટે ધારણ કર્યા હતા?",
+        "options": [
+          "જયસિંહ સોલંકી",
+          "કુમારપાળ",
+          "ભીમદેવ બીજો",
+          "કર્ણદેવ વાઘેલા"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 80,
+        "section": "general_knowledge",
+        "question": "ભદ્રનો કિલ્લો અને ત્રણ દરવાજા કોણે બંધાવ્યા હતા?",
+        "options": [
+          "અહમદશાહ",
+          "મહમૂદ બેગડો",
+          "સિદ્ધરાજ જયસિંહ",
+          "આલમશાહ ભીલ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 81,
+        "section": "general_knowledge",
+        "question": "મુઘલ કાળ દરમ્યાન ગુજરાતનું કયું બંદર \"બાબુલ મક્કા' તરીકે ઓળખાતું હતું?",
+        "options": [
+          "સુરત",
+          "ભરૂચ",
+          "કંડલા",
+          "ખંભાત"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 82,
+        "section": "general_knowledge",
+        "question": "ગુજરાતના ઇતિહાસમાં ઈ.સ. 1923માં બનેલ દદવાવ હત્યાકાંડની ઘટના કયા જીલ્લામાં બનેલી હતી?",
+        "options": [
+          "બનાસકાંઠા",
+          "સાબરકાંઠા",
+          "મહિસાગર",
+          "દાહોદ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 83,
+        "section": "gujarati",
+        "question": "'ભદ્રંભદ્ર' નવલકથા કયા સાહિત્યકારની રચના છે?",
+        "options": [
+          "ગોવર્ધનરામ ત્રિપાઠી",
+          "રમણભાઈ નીલકંઠ",
+          "મહિપતરામ રૂપરામ",
+          "કરસનદાસ મૂળજી"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 84,
+        "section": "general_knowledge",
+        "question": "'ભીલ સેવા મંડળ, દાહોદ'ની સ્થાપના કોણે કરી હતી?",
+        "options": [
+          "ઠાકોરભાઈ નાયક",
+          "અમૃતલાલ ઠક્કર (ઠક્કરબાપા)",
+          "મહાત્મા ગાંધીજી",
+          "મોરારજી દેસાઈ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 85,
+        "section": "general_knowledge",
+        "question": "અમદાવાદની પ્રસિદ્ધ 'જ્યોતિસંઘ' સંસ્થાની સ્થાપના કોના સઘન પ્રયત્નોથી થઈ હતી?",
+        "options": [
+          "મલ્લિકા સારાભાઈ",
+          "મૃણાલિની સારાભાઈ",
+          "મૃદુલા સારાભાઈ",
+          "ઈલાબેન ભટ્ટ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 86,
+        "section": "general_knowledge",
+        "question": "'સુજની' નામની રજાઇનો ઉદ્યોગ ક્યાં વિકસેલ છે?",
+        "options": [
+          "સુરત",
+          "ભરૂચ",
+          "અમદાવાદ",
+          "કચ્છ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 87,
+        "section": "general_knowledge",
+        "question": "ગુજરાતમાં સૌપ્રથમ આયુર્વેદની કૉલેજ ક્યાં શરૂ થઈ હતી?",
+        "options": [
+          "સુરત",
+          "પાટણ",
+          "ભાવનગર",
+          "જામનગર"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 88,
+        "section": "general_knowledge",
+        "question": "'બિંદુ સરોવર' ક્યાં આવેલું છે?",
+        "options": [
+          "પાટણ",
+          "કચ્છ",
+          "અમદાવાદ",
+          "સિદ્ધપુર"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 89,
+        "section": "general_knowledge",
+        "question": "કયું જોડકું સાચું નથી?",
+        "options": [
+          "દાદા મેકરણ - કચ્છ",
+          "સંત પીપા - રાજુલા",
+          "શ્રીમદ રાજચંદ્ર - વવાણિયા (મોરબી)",
+          "સંતરામ મહારાજ - સંતરામપુર"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 90,
+        "section": "general_knowledge",
+        "question": "'અડાલજની વાવ'નું બાંધકામ કોના સમયમાં થયું હતું?",
+        "options": [
+          "મહમૂદ બેગડો",
+          "અહમદશાહ",
+          "કરણ વાઘેલા",
+          "કુમારપાળ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 91,
+        "section": "general_knowledge",
+        "question": "વૈશાલી મકવાણા, મેઘનાબા ઝાલા તથા જેમિન પંચાલે કઈ રમતમાં નામ રોશન કર્યું છે?",
+        "options": [
+          "વોલીબોલ",
+          "ખો-ખો",
+          "યોગ",
+          "કબડ્ડી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 92,
+        "section": "general_knowledge",
+        "question": "કબડ્ડીની રમતમાં દરેક ટુકડીમાં કુલ કેટલા ખેલાડીઓ હોય છે?",
+        "options": [
+          "08",
+          "10",
+          "12",
+          "14"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 93,
+        "section": "gsrtc_rules",
+        "question": "વાહને કાપેલું અંતર માપવા માટેનું સાધન કયા નામે ઓળખાય છે?",
+        "options": [
+          "સ્પીડોમીટર",
+          "ઓડોમીટર",
+          "થર્મોમીટર",
+          "ટેકોમીટર"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 94,
+        "section": "general_knowledge",
+        "question": "એક માઇક્રો સેકન્ડ એટલે એક સેકન્ડનો ...... મો ભાગ?",
+        "options": [
+          "લાખ",
+          "દસ લાખ",
+          "કરોડ",
+          "દસ કરોડ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 95,
+        "section": "first_aid",
+        "question": "હિપેટાઈટિસ A રોગ શેનાથી ફેલાય છે?",
+        "options": [
+          "હવા",
+          "પાણી",
+          "ખોરાક",
+          "સંપર્ક"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 96,
+        "section": "general_knowledge",
+        "question": "આંતરરાષ્ટ્રીય વિશ્વ યોગ દિવસ ઉજવવાની શરૂઆત ક્યારથી થઈ છે?",
+        "options": [
+          "2014",
+          "2015",
+          "2016",
+          "2017"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 97,
+        "section": "general_knowledge",
+        "question": "કોરોનાની ત્રીજી લહેર સમયે ગુજરાત સરકારે કેટલા ઓક્સિજન ઉત્પાદનની નેમ રાખી હતી?",
+        "options": [
+          "1200 મેટ્રિક ટન",
+          "1300 મેટ્રિક ટન",
+          "1600 મેટ્રિક ટન",
+          "1800 મેટ્રિક ટન"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 98,
+        "section": "general_knowledge",
+        "question": "'મરીન સ્કીલ ટ્રેનિંગ સેન્ટર' ક્યાં વિકસાવવામાં આવ્યું?",
+        "options": [
+          "શિયાળ બેટ",
+          "પિરોટન ટાપુ",
+          "દ્વારકા ITI",
+          "પીપાવાવ પોર્ટ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 99,
+        "section": "general_knowledge",
+        "question": "ડૉક્ટરની ઘરે બેઠા નિઃશુલ્ક કન્સલ્ટન્સી મેળવવા ભારત સરકારે કઈ એપ શરૂ કરી છે?",
+        "options": [
+          "ઈ-સંજીવની",
+          "ઈ-દવા",
+          "ઈ-સારવાર",
+          "ઈ-ઓપીડી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 100,
+        "section": "general_knowledge",
+        "question": "વિશ્વનું પ્રથમ નેનો યુરિયા લિક્વિડ ખાતર બનાવવાનું એકમ હાલ ક્યાં શરૂ કરવામાં આવ્યું છે?",
+        "options": [
+          "નર્મદા - યુરિયા એકમ, સુરત",
+          "ઈફ્કો - કલોલ એકમ",
+          "સરદાર ફર્ટીલાઇઝર - ભરૂચ એકમ",
+          "નર્મદા - વડોદરા એકમ"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "id": "shift_2018",
+    "title": "કંડક્ટર પેપર (10-06-2018)",
+    "subtitle": "GSRTC Conductor Official Paper (50 પ્રશ્નો - Shift 3)",
+    "date": "10-06-2018",
+    "duration_mins": 60,
+    "total_marks": 50,
+    "questions": [
+      {
+        "id": 1,
+        "section": "gujarati",
+        "question": "નીચેના વાક્યમાં રેખાંકિત સમાસનો પ્રકાર જણાવો: 'નાડીએ ત્યારે આખી નર્મદા આપણી હોય.'",
+        "options": [
+          "ઉપપદ સમાસ",
+          "દ્વંદ્વ સમાસ",
+          "બહુવ્રીહિ સમાસ",
+          "કર્મધારય સમાસ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 2,
+        "section": "gujarati",
+        "question": "નીચેના શબ્દોની જોડણીમાંથી કઈ સાચી છે તે જણાવો.",
+        "options": [
+          "પત્રચેષ્ટા",
+          "પતરચેષ્ટા",
+          "પત્રચેસ્ટા",
+          "પત્રચેચ્ટા"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 3,
+        "section": "gujarati",
+        "question": "નીચે આપેલા શબ્દોની સંધિમાંથી સાચી સંધિ જણાવો: નિશ્ચિંત",
+        "options": [
+          "નિસ્ + ચિંત",
+          "નીસ + ચિંત",
+          "નીસ + ચીત",
+          "નીષ્ + ચિંત"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 4,
+        "section": "gujarati",
+        "question": "નીચેના વાક્યોમાંથી કયું વાક્ય ભાવે વાક્ય નથી?",
+        "options": [
+          "કાનુથી ઊંચે જોવાયું.",
+          "કાનુને હસવું આવ્યું.",
+          "એનાથી પુસ્તક પુરું કરી પડાયું.",
+          "તારાથી તૂટી જવાશે તો તોય નહિ લઉં."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 5,
+        "section": "gujarati",
+        "question": "નીચે આપેલા શબ્દોમાંથી સાચો વિરુદ્ધાર્થ શબ્દ શોધીને લખો: સમજણ",
+        "options": [
+          "સમાજ",
+          "બેસમજદાર",
+          "નાસમજદાર",
+          "ગેરસમજણ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 6,
+        "section": "gujarati",
+        "question": "નીચે આપેલા શબ્દોમાંથી સાચો પર્યાય શોધીને લખો: ખોબણ",
+        "options": [
+          "ખોભી",
+          "ગુફા",
+          "ઊભવું",
+          "ઉકેરડું"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 7,
+        "section": "gujarati",
+        "question": "નીચે આપેલા વાક્યનો છંદ ઓળખાવો: લાંબા જોડે ટૂંકો જાય, મરે નહિ તો માંદો થાય.",
+        "options": [
+          "ચોપાઈ",
+          "સવૈયા",
+          "પૃથ્વી",
+          "મનહર"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 8,
+        "section": "gujarati",
+        "question": "નીચે આપેલા રૂઢિપ્રયોગનો સાચો અર્થ જણાવો: જાદુઈ લાકડી ફરવી",
+        "options": [
+          "જાદુ કરવું",
+          "ચમત્કાર કરવો",
+          "મંત્રતંત્ર કે જાદુટોણાં કરવાં",
+          "કામણ કરવું"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 9,
+        "section": "gujarati",
+        "question": "નીચે આપેલા વાક્યનો અલંકાર ઓળખાવો: જમીન પર પૃથ્વીવલ્લભનું શબ છૂંદાઈને રોટલો બની પડ્યું હતું.",
+        "options": [
+          "ઉત્પ્રેક્ષા",
+          "રૂપક",
+          "અનન્વય",
+          "વ્યાજસ્તુતિ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 10,
+        "section": "gujarati",
+        "question": "શબ્દસમૂહ માટે એક શબ્દ: પૃથ્વી અને આકાશની જ્યાં સંધિ દેખાતી હોય તે રેખા.",
+        "options": [
+          "ક્ષિતિજ",
+          "સંધ્યા",
+          "મેઘધનુષ",
+          "સધિકાળ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 11,
+        "section": "english",
+        "question": "Boys, do this task ______",
+        "options": [
+          "yourselves",
+          "themselves",
+          "theirselves",
+          "yourself"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 12,
+        "section": "english",
+        "question": "Sanjana ______ her journal by next week.",
+        "options": [
+          "will submit",
+          "will have submitted",
+          "will be submitted",
+          "is submitted"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 13,
+        "section": "english",
+        "question": "The message ______ to the doctor in time.",
+        "options": [
+          "is sending",
+          "will send",
+          "was sending",
+          "is sent"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 14,
+        "section": "english",
+        "question": "The boy jumped ______ the river for swimming.",
+        "options": [
+          "to",
+          "in",
+          "into",
+          "under"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 15,
+        "section": "english",
+        "question": "Always drink boiled water if you want to ______ yourself from falling ill.",
+        "options": [
+          "preserve",
+          "cease",
+          "prevent",
+          "hot"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 16,
+        "section": "gsrtc_rules",
+        "question": "એસ.ટી. નિગમ કઈ પરમીટ હેઠળ બસોનું સંચાલન કરે છે?",
+        "options": [
+          "કેઝ્યુઅલ કોન્ટ્રેક્ટ કેરેજ",
+          "ગુડ્સ કેરેજ",
+          "સ્ટેજ કેરેજ",
+          "ટૂરીસ્ટ કેરેજ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 17,
+        "section": "gsrtc_rules",
+        "question": "એસ.ટી. નિગમની બસોમાં સીટ નંબર 6, 7, 8, 9 અને 10, કોના માટે અનામત રાખવાની જોગવાઈ છે?",
+        "options": [
+          "સ્વાતંત્ર્ય સેનાનીઓ માટે",
+          "ધારાસભ્યશ્રીઓ માટે",
+          "વિકલાંગો માટે",
+          "સ્ત્રીઓ માટે"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 18,
+        "section": "gsrtc_rules",
+        "question": "એસ.ટી. નિગમની બસોમાં શાળા/મહાશાળાના વિદ્યાર્થીઓને નિયત બસભાડામાં કેટલા ટકા રાહત આપવામાં આવે છે?",
+        "options": [
+          "25%",
+          "82.5%",
+          "50%",
+          "17.5%"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 19,
+        "section": "gsrtc_rules",
+        "question": "એસ.ટી. નિગમના કન્ડક્ટરે પોતાનો બેજ ક્યાં લગાવવાનો હોય છે?",
+        "options": [
+          "કેશ બેગ ઉપર",
+          "ખીસ્સા ઉપર",
+          "શર્ટ પર ડાબી બાજુના ખીસ્સા ઉપર",
+          "શર્ટ ઉપર જમણી બાજુના ખીસ્સા ઉપર"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 20,
+        "section": "gsrtc_rules",
+        "question": "નિગમની બસોમાં લગેજ ગણતરીનો સ્લેબ 20 કિગ્રા છે. 25 કિગ્રા લગેજ ફ્રી છે. 8 સ્ટેજના 40 કિગ્રા લગેજ માટે 1 મુસાફરે કેટલું ભાડું ચૂકવવું પડે?",
+        "options": [
+          "2.00 રૂ.",
+          "4.00 રૂ.",
+          "3.00 રૂ.",
+          "1.00 રૂ."
+        ],
+        "answer": 2
+      },
+      {
+        "id": 21,
+        "section": "gsrtc_rules",
+        "question": "24 સ્ટેજની મુસાફરી કરી રહેલ મુસાફર પાસે 75 કિગ્રા લગેજ છે, તો કન્ડક્ટરે કેટલા રૂપિયાની લગેજ ટિકિટ આપવાની રહેશે?",
+        "options": [
+          "18-00 રૂપિયા",
+          "22-00 રૂપિયા",
+          "19-00 રૂપિયા",
+          "17-00 રૂપિયા"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 22,
+        "section": "gsrtc_rules",
+        "question": "લર્નિંગ લાયસન્સ કેટલા સમય સુધી અમલમાં રહે છે?",
+        "options": [
+          "છ મહિના",
+          "બાર મહિના",
+          "પાંચ મહિના",
+          "આઠ મહિના"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 23,
+        "section": "gsrtc_rules",
+        "question": "ટ્રાન્સપોર્ટ વાહન સિવાયનું મોટર વાહન ચલાવવા લઘુત્તમ વયમર્યાદા કેટલી હોવી જોઈએ?",
+        "options": [
+          "20 વર્ષ",
+          "18 વર્ષ",
+          "21 વર્ષ",
+          "19 વર્ષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 24,
+        "section": "gsrtc_rules",
+        "question": "મોટર વાહન ધારા મુજબ કંડક્ટર માટેના લાઈસન્સ માટે લઘુત્તમ વયમર્યાદા કેટલી છે?",
+        "options": [
+          "20 વર્ષ",
+          "18 વર્ષ",
+          "22 વર્ષ",
+          "16 વર્ષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 25,
+        "section": "gsrtc_rules",
+        "question": "મોટર વાહન ધારાની કઈ કલમ હેઠળ ટિકિટ વગર મુસાફરી કરનારને દંડ કરવામાં આવે છે?",
+        "options": [
+          "કલમ 177",
+          "કલમ 179",
+          "કલમ 178",
+          "કલમ 180"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 26,
+        "section": "gsrtc_rules",
+        "question": "જો વાહન ચાલક ભયજનક ગતિએ વાહન હંકારતો હોય તો મોટર વાહન ધારાની કઈ કલમ હેઠળ દંડ થાય છે?",
+        "options": [
+          "કલમ 183",
+          "કલમ 184",
+          "કલમ 185",
+          "કલમ 186"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 27,
+        "section": "first_aid",
+        "question": "પ્રાથમિક ચિકિત્સાના નિયમો 'ABC' પૈકી 'B' નો અર્થ શું થાય?",
+        "options": [
+          "બોન્ડિંગ (Bonding)",
+          "બ્લીડિંગ (Bleeding)",
+          "બ્રીધિંગ (Breathing)",
+          "ઉપરોક્ત પૈકી એક પણ નહિ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 28,
+        "section": "gsrtc_rules",
+        "question": "ગુજરાત નિગમ દ્વારા મહિલા કન્ડક્ટરોની ભરતી ક્યારથી શરૂ કરવામાં આવી?",
+        "options": [
+          "વર્ષ 2010",
+          "વર્ષ 2011",
+          "વર્ષ 2012",
+          "વર્ષ 2013"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 29,
+        "section": "computer",
+        "question": "કમ્પ્યુટરમાં સામાન્ય ટાઇપિંગ સ્પેલિંગમાં થતી ભૂલો આપોઆપ સુધારે છે તેને શું કહેવાય?",
+        "options": [
+          "ઓટો સામેલ કરો",
+          "ઓટો કરેક્ટ",
+          "ઓટો ઈન્સર્ટ",
+          "ઓટો ચેક"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 30,
+        "section": "computer",
+        "question": "વેબ કન્ટેન્ટ પ્રદર્શિત કરવા માટે કઈ ભાષાનો ઉપયોગ થાય છે?",
+        "options": [
+          "C",
+          "HTML",
+          "BASIC",
+          "PROLOG"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 31,
+        "section": "computer",
+        "question": "સ્પ્રેડશીટમાં આલેખ ઉમેરવા કયા મેનુનો ઉપયોગ થાય છે?",
+        "options": [
+          "Insert + Tools",
+          "Insert + Chart",
+          "View + Chart",
+          "Data + Chart"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 32,
+        "section": "computer",
+        "question": "કેલ્સીમાં બનાવેલ વર્કશીટનું અનુલંબન (Extension) શું હોય છે?",
+        "options": [
+          ".ods",
+          ".odd",
+          ".xls",
+          ".obj"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 33,
+        "section": "computer",
+        "question": "નીચેનામાંથી કયું તાર્કિક વિધેય (Logical Function) નથી?",
+        "options": [
+          "OR",
+          "AND",
+          "NOT",
+          "PROPER"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 34,
+        "section": "computer",
+        "question": "BMP નું પૂરું નામ શું છે?",
+        "options": [
+          "બિટ મેપ પિક્ચર",
+          "બિટ મેપ પેપર",
+          "બિટ મેપ પ્રોટોકોલ",
+          "ઉપરોક્ત તમામ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 35,
+        "section": "computer",
+        "question": "હાર્ડવેર અને સૉફ્ટવેરને જોડવાનું કામ કોણ કરે છે?",
+        "options": [
+          "Operating System",
+          "Programming Language",
+          "CPU",
+          "Application Program"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 36,
+        "section": "computer",
+        "question": "નાનામાં નાનો યુનિટ કયો છે?",
+        "options": [
+          "BIT",
+          "BYTE",
+          "WORD",
+          "DOUBLE"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 37,
+        "section": "computer",
+        "question": "Notepad કયા પ્રકારનું સૉફ્ટવેર છે?",
+        "options": [
+          "પ્રસ્તુતિ",
+          "યુટિલિટી",
+          "સિસ્ટમ",
+          "આમાંથી એક પણ નહિ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 38,
+        "section": "general_knowledge",
+        "question": "ઉત્તરાર્ધ મહોત્સવ ક્યાં ઉજવાય છે?",
+        "options": [
+          "મોઢેરા",
+          "વડનગર",
+          "ચાંપાનેર",
+          "ધોરડો-કચ્છ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 39,
+        "section": "general_knowledge",
+        "question": "દેવભૂમિ દ્વારકા જિલ્લાનું મુખ્ય મથક કયું છે?",
+        "options": [
+          "ઓખા",
+          "ભાણવડ",
+          "ખંભાળિયા",
+          "દ્વારકા"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 40,
+        "section": "general_knowledge",
+        "question": "દેશના કરમાળખામાં આમૂલ પરિવર્તન લાવનાર જી.એસ.ટી. બિલ ક્યારથી અમલમાં આવ્યું?",
+        "options": [
+          "1, એપ્રિલ 2017",
+          "1, મે 2017",
+          "1, જુલાઈ 2017",
+          "1, જાન્યુઆરી 2018"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 41,
+        "section": "general_knowledge",
+        "question": "બંસીલાલ વર્મા નામના ગુજરાતના કાર્ટૂનિસ્ટ કયા નામે જાણીતા છે?",
+        "options": [
+          "ચકોર",
+          "નારદ",
+          "શેષમલ્લી",
+          "આચાર્ય"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 42,
+        "section": "general_knowledge",
+        "question": "ગંગાના પ્રવાહનો એક ફાંટો પ. બંગાળમાં ભાગીરથી હુગલી નામે ઓળખાય, જ્યારે બીજો ફાંટો બાંગ્લાદેશમાં પ્રવેશે ત્યારે કયા નામે ઓળખાય છે?",
+        "options": [
+          "મેઘના",
+          "ગંગા",
+          "પદ્મા",
+          "જમુના"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 43,
+        "section": "general_knowledge",
+        "question": "એશિયાઈ સિંહોના સંરક્ષણ માટેની સિંહ પરિયોજના ગીરમાં ક્યારથી શરૂ કરાઈ છે?",
+        "options": [
+          "1972",
+          "1969",
+          "1986",
+          "2001"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 44,
+        "section": "general_knowledge",
+        "question": "નીચેના પૈકી કયું વિધાન ખોટી વિગતો દર્શાવે છે?",
+        "options": [
+          "સિંહ ગુજરાતનું રાજ્ય પ્રાણી છે.",
+          "સુરખાબ ગુજરાતનું રાજ્ય પક્ષી છે.",
+          "જંગલી ભેંસ ડાંગ જિલ્લાનાં ગીચ જંગલોમાં જોવા મળે છે.",
+          "ચિત્તા ગુજરાતનાં જંગલોમાં જોવા મળતા નથી."
+        ],
+        "answer": 2
+      },
+      {
+        "id": 45,
+        "section": "general_knowledge",
+        "question": "કૃષ્ણરાજ સાગર બહુહેતુક યોજના કઈ નદી પર બાંધવામાં આવેલી છે?",
+        "options": [
+          "કૃષ્ણા",
+          "તુંગભદ્રા",
+          "દામોદર",
+          "કાવેરી"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 46,
+        "section": "general_knowledge",
+        "question": "ચાંપાનેરની સ્થાપત્યકલા ધ્યાને લઈ કયા સાલમાં યુનેસ્કોએ તેને વૈશ્વિક વારસાના સ્થળોની યાદીમાં સમાવ્યું?",
+        "options": [
+          "2001",
+          "2008",
+          "2004",
+          "2014"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 47,
+        "section": "general_knowledge",
+        "question": "પ્લાસીનું યુદ્ધ ક્યારે લડાયું હતું?",
+        "options": [
+          "24 માર્ચ, 1760",
+          "16 જાન્યુઆરી, 1747",
+          "23 જૂન, 1757",
+          "22 ફેબ્રુઆરી, 1764"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 48,
+        "section": "general_knowledge",
+        "question": "સંયુક્ત રાષ્ટ્રોનું કાર્યાલય ક્યાં આવેલું છે?",
+        "options": [
+          "શિકાગો",
+          "ન્યૂયોર્ક",
+          "પેરિસ",
+          "હેગ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 49,
+        "section": "general_knowledge",
+        "question": "દાંડીકૂચ દરમિયાન ગાંધીજીએ સાથીદારો સાથે કેટલા દિવસની પદયાત્રા કરી હતી?",
+        "options": [
+          "21 દિવસ",
+          "28 દિવસ",
+          "29 દિવસ",
+          "24 દિવસ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 50,
+        "section": "general_knowledge",
+        "question": "ગાંધીજીના આધ્યાત્મિક ગુરુ કોણ હતા?",
+        "options": [
+          "ગોપાલકૃષ્ણ ગોખલે",
+          "શ્રીમદ્ રાજચંદ્ર",
+          "બાળ ગંગાધર તિલક",
+          "સાકરિયા સ્વામી"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "id": "shift_2017_eve",
+    "title": "કંડક્ટર પેપર (06-08-2017 - સાંજ)",
+    "subtitle": "GSRTC Conductor Evening Shift (30 પ્રશ્નો - Shift 4)",
+    "date": "06-08-2017",
+    "duration_mins": 40,
+    "total_marks": 30,
+    "questions": [
+      {
+        "id": 1,
+        "section": "maths_reasoning",
+        "question": "આ શ્રેણી જુઓ: 36, 34, 30, 28, 24, ..... આગળ શું સંખ્યા આવવી જોઈએ?",
+        "options": [
+          "20",
+          "22",
+          "23",
+          "26"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 2,
+        "section": "maths_reasoning",
+        "question": "P અને Q ની સરેરાશ માસિક આવક રૂ.5050, Q અને R ની સરેરાશ રૂ.6250 અને P અને R ની સરેરાશ રૂ.5200. P ની માસિક આવક કેટલી?",
+        "options": [
+          "રૂ. 3500",
+          "રૂ. 4000",
+          "રૂ. 4050",
+          "રૂ. 4500"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 3,
+        "section": "maths_reasoning",
+        "question": "એક વ્યક્તિ 5 મિનિટમાં 600 મીટરની લાંબી ગલી પાર કરે છે. કલાક દીઠ કિ.મીમાં તેની ઝડપ શું છે?",
+        "options": [
+          "3.6",
+          "7.2",
+          "8.4",
+          "10"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 4,
+        "section": "maths_reasoning",
+        "question": "ફળના વેપારી પાસે કેટલાક સફરજન હતાં તેમાંથી 40% સફરજન વેચે છે અને હજુ પણ 420 સફરજન છે. અસલમાં તેની પાસે કેટલા હશે?",
+        "options": [
+          "588",
+          "600",
+          "672",
+          "700"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 5,
+        "section": "maths_reasoning",
+        "question": "10,000 રૂપિયાના 10% ના ચક્રવૃદ્ધિ વ્યાજે 4 વર્ષમાં કેટલા થાય?",
+        "options": [
+          "15,646 રૂપિયા",
+          "13,541 રૂપિયા",
+          "14,641 રૂપિયા",
+          "16,247 રૂપિયા"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 6,
+        "section": "english",
+        "question": "Identify the sentence with correct word order:",
+        "options": [
+          "Tom a lot of people invited.",
+          "Tom invited a lot of people.",
+          "A lot of people Tom invited.",
+          "Tom did invite of people a lot."
+        ],
+        "answer": 1
+      },
+      {
+        "id": 7,
+        "section": "english",
+        "question": "She had an unpleasant experience ______ she was in Thailand.",
+        "options": [
+          "but",
+          "because",
+          "and",
+          "while"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 8,
+        "section": "computer",
+        "question": "કમ્પ્યુટરના પિતા તરીકે કોણ ઓળખાય છે?",
+        "options": [
+          "બ્લેઇઝ પાસ્કલ",
+          "લાઈબનિત્ઝ",
+          "બિલગેટ્સ",
+          "ચાર્લ્સ બેબેજ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 9,
+        "section": "computer",
+        "question": "સામાન્ય રીતે Help માટે કઈ કીનો ઉપયોગ થાય છે?",
+        "options": [
+          "F10",
+          "F1",
+          "F12",
+          "F11"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 10,
+        "section": "computer",
+        "question": "MS-WORDમાં સ્પેલિંગ અને ગ્રામરની ચકાસણી માટે કઈ કી નો ઉપયોગ થાય છે?",
+        "options": [
+          "F2",
+          "F7",
+          "F1",
+          "F9"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 11,
+        "section": "computer",
+        "question": "પાવર પોઈન્ટમાં બનાવેલી ફાઇલનું પ્રેઝન્ટેશન જોવા માટે કઈ ફંક્શન કી નો ઉપયોગ થાય છે?",
+        "options": [
+          "F3",
+          "F5",
+          "F7",
+          "F4"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 12,
+        "section": "computer",
+        "question": "GB નું પૂરું નામ શું છે?",
+        "options": [
+          "GIGABYTES",
+          "GEGABYTES",
+          "GEGABITS",
+          "DIGABITS"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 13,
+        "section": "computer",
+        "question": "કૉમ્પ્યુટરમાં નેટવર્ક સ્થાપિત કરવા તેમાં ભાગ લેતા દરેક કૉમ્પ્યુટરમાં કયું હાર્ડવેર વપરાય છે?",
+        "options": [
+          "NIC",
+          "NCI",
+          "NOC",
+          "NCC"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 14,
+        "section": "computer",
+        "question": "વર્લ્ડ વાઈડ વેબને ટૂંકમાં ______ કહે છે.",
+        "options": [
+          "WWW",
+          "વેબ",
+          "(A) અથવા (B)",
+          "આપેલ પૈકી એક પણ નહિ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 15,
+        "section": "gujarati",
+        "question": "નીચેનામાંથી કયો શબ્દ સમાનાર્થીમાં નથી?",
+        "options": [
+          "સૂર્ય",
+          "રવિ",
+          "દિવાકર",
+          "સોમ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 16,
+        "section": "gujarati",
+        "question": "'અમે' શબ્દ વિભક્તિનો કયો પ્રકાર દર્શાવે છે?",
+        "options": [
+          "કરણના અર્થમાં તૃતીયા",
+          "કર્તાના અર્થમાં પ્રથમા",
+          "કર્મના અર્થમાં દ્વિતીયા",
+          "સંબંધના અર્થમાં છઠ્ઠી"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 17,
+        "section": "gujarati",
+        "question": "'પાણી આવતાં પહેલાં પાળ બાંધવી' કહેવતનો અર્થ આપો.",
+        "options": [
+          "બંધ બાંધી દેવો",
+          "દીર્ઘદ્રષ્ટિ વાપરવી",
+          "ડૂબતો માણસ તરવું પકડે",
+          "ભવિષ્યવાણી કરવી"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 18,
+        "section": "gujarati",
+        "question": "'મધુ હાલરડું ગાય છે.' નું પ્રેરક વાક્ય શોધો.",
+        "options": [
+          "મધુ હાલરડું ગવડાવે છે.",
+          "શિક્ષકે મધુ પાસે પાઠ વંચાવ્યો.",
+          "મધુ હાલરડું ગાયું.",
+          "મધુથી હાલરડું ગાતી હતી."
+        ],
+        "answer": 0
+      },
+      {
+        "id": 19,
+        "section": "gsrtc_rules",
+        "question": "GSRTC નીચેના પૈકી કઈ વિશિષ્ટ સેવા પૂરી પાડતી નથી?",
+        "options": [
+          "તહેવારો દરમિયાનની સેવા",
+          "તીર્થધામો ને જોડતી સેવા",
+          "શાળા કોલેજો ને જોડતી સેવા",
+          "હોસ્પિટલો ને જોડતી સેવા"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 20,
+        "section": "gsrtc_rules",
+        "question": "જો સંજયરૂપ = એસ. ટી. ભાવનગર વિભાગ તો અમૂલ = ?",
+        "options": [
+          "અમરેલી વિભાગ",
+          "નડિયાદ વિભાગ",
+          "ભરુચ વિભાગ",
+          "સુરત વિભાગ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 21,
+        "section": "gsrtc_rules",
+        "question": "નીચેનામાંથી કઈ ઉંમરના બાળકની અડધી ટિકિટ થાય?",
+        "options": [
+          "બે થી દસ વર્ષ",
+          "પાંચ થી બાર વર્ષ",
+          "ત્રણ થી નવ વર્ષ",
+          "આઠ થી પંદર વર્ષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 22,
+        "section": "gsrtc_rules",
+        "question": "એક મુસાફર એસ. ટી. બસમાં 19 કિલો ગ્રામની ઘરવખરી લઈ જાય છે. તો તેને ચૂકવવા પાત્ર થતું લગેજ સ્ટેજ દીઠ કેટલું?",
+        "options": [
+          "19 રૂપિયા",
+          "20 રૂપિયા",
+          "1 રૂપિયા",
+          "કોઈ ચાર્જ નહીં"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 23,
+        "section": "gsrtc_rules",
+        "question": "લોકલ બસમાં 1.5 સ્ટેજનું ભાડું રૂપિયા 8 હોય તો 3 મુસાફરનું કુલ ભાડું કેટલું થાય?",
+        "options": [
+          "રૂપિયા 20",
+          "રૂપિયા 26",
+          "રૂપિયા 25",
+          "રૂપિયા 24"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 24,
+        "section": "gsrtc_rules",
+        "question": "પી. યુ. સી. સર્ટીફિકેટ કેટલા સમય માટે માન્ય રહે છે?",
+        "options": [
+          "1 મહિનો",
+          "3 મહિનો",
+          "6 મહિના",
+          "1 વર્ષ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 25,
+        "section": "gsrtc_rules",
+        "question": "અનમેન રેલવે ક્રોસિંગ પરથી બસને પસાર કરાવતા પહેલા કેટલી દૂર ઊભી રાખવાની?",
+        "options": [
+          "10 ફૂટ થી ઓછી",
+          "200 ફૂટ થી વધારે",
+          "40 ફૂટ થી વધારે",
+          "1 ફૂટ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 26,
+        "section": "gsrtc_rules",
+        "question": "ડ્રાયવિંગ લાયસન્સ મેળવવા ઇચ્છુક અરજદાર ને વધારેમાં વધારે કેટલા વર્ષ સુધી ડ્રાયવિંગ લાયસન્સ આપવામાં આવે છે?",
+        "options": [
+          "20 વર્ષ માટે",
+          "3 વર્ષ માટે",
+          "7 વર્ષ માટે",
+          "15 વર્ષ માટે"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 27,
+        "section": "first_aid",
+        "question": "મુસાફરી દરમ્યાન દર્દીને મધમાખી કરડે તો ......",
+        "options": [
+          "તુલસીનો રસ લગાડવો",
+          "આદું નો રસ લગાડવો",
+          "ડુંગળી નો રસ લગાડવો",
+          "લીંબુ નો રસ લગાડવો"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 28,
+        "section": "gsrtc_rules",
+        "question": "બસમાં કેટલા મુસાફરો લેવા તે સંખ્યા કોણ નક્કી કરે છે?",
+        "options": [
+          "આરટીઓ",
+          "ગુજરાત એસ ટી",
+          "ડેપો મેનેજર",
+          "પેસેન્જર"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 29,
+        "section": "gsrtc_rules",
+        "question": "પ્રવાસી પાસેથી કન્ડક્ટરે મુસાફરી ભાડું ક્યારે વસૂલ કરવાનું હોય?",
+        "options": [
+          "ઉતારવાના સ્થળે",
+          "બેસવાના સ્થળેથી",
+          "પહેલા સ્ટોપથી",
+          "ઉપરોક્ત કોઈ પણ નહીં"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 30,
+        "section": "gsrtc_rules",
+        "question": "બસ સ્ટેશનમાં બસને પાછી લેવડાવવાની પદ્ધતિને શું કહેવાય છે?",
+        "options": [
+          "રિવર્સિંગ પ્રોસિજર",
+          "બ્રેક ડાઉન પ્રોસિજર",
+          "વિસલિંગ પ્રથા",
+          "ઉપરોક્ત કોઈ નહીં"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "shift_2017_morn",
+    "title": "કંડક્ટર પેપર (06-08-2017 - સવાર)",
+    "subtitle": "GSRTC Conductor Morning Shift (20 પ્રશ્નો - Shift 5)",
+    "date": "06-08-2017",
+    "duration_mins": 30,
+    "total_marks": 20,
+    "questions": [
+      {
+        "id": 1,
+        "section": "maths_reasoning",
+        "question": "આ શ્રેણી જુઓ: 21, 9, 21, 11, 21, 13, 21, .... આગળ કઈ સંખ્યા આવવી જોઈએ?",
+        "options": [
+          "14",
+          "15",
+          "21",
+          "23"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 2,
+        "section": "maths_reasoning",
+        "question": "ક્રિકેટ ટીમના 11 ખેલાડીઓની સરેરાશ ઉંમર 27 વર્ષ છે. કેપ્ટનની ઉંમર 37 વર્ષ હોય, તો બાકીના ખેલાડીઓની સરેરાશ ઉંમર શું?",
+        "options": [
+          "25 વર્ષ",
+          "26 વર્ષ",
+          "27 વર્ષ",
+          "28 વર્ષ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 3,
+        "section": "maths_reasoning",
+        "question": "જો ઊંટને બિલાડી, બિલાડીને કૂતરો, કૂતરાને બકરી, બકરીને ગધેડો અને ગધેડાને ઘોડો કહેવામાં આવે તો નીચેનામાંથી કોણ ભસે છે?",
+        "options": [
+          "બિલાડી",
+          "કૂતરો",
+          "ગધેડો",
+          "બકરી"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 4,
+        "section": "english",
+        "question": "Sarah ______ (to cook) thirty pancakes today.",
+        "options": [
+          "cook",
+          "cooks",
+          "is cooking",
+          "has cooked"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 5,
+        "section": "english",
+        "question": "______ Kilimanjaro is situated in Tanzania.",
+        "options": [
+          "A",
+          "An",
+          "The",
+          "No article"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 6,
+        "section": "computer",
+        "question": "HTML ફાઈલ ક્યા અનુલંબન સાથે સાચવવામાં આવે છે?",
+        "options": [
+          ".txt",
+          ".htm",
+          ".html",
+          "(B) અથવા (C)"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 7,
+        "section": "computer",
+        "question": "TIFF નું આખું નામ ______ છે.",
+        "options": [
+          "Terrific Image File Folder",
+          "Temporary Image File Format",
+          "Tagged Image File Format",
+          "Temporary Image File Format"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 8,
+        "section": "computer",
+        "question": "બ્રાઉઝરની વિન્ડોને ઘણા ભાગોમાં અથવા પેટા-વિન્ડોમાં વિભાજિત કરે છે.",
+        "options": [
+          "ફ્રેમ",
+          "યાદી",
+          "કોષ્ટક",
+          "આપેલ તમામ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 9,
+        "section": "gujarati",
+        "question": "'પ્રેમ પાંચડે થવું' - રૂઢિપ્રયોગનો અર્થ આપો.",
+        "options": [
+          "આર્થિક સ્થિતિ સારી થવી",
+          "પાંદડાં વધી જવા",
+          "એકનાં બે ન થવું",
+          "બેમત ના હોવો"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 10,
+        "section": "gujarati",
+        "question": "'હું એક કોળિયો પણ ખાઈશ નહિ.' કર્મણિમાં ફેરવો.",
+        "options": [
+          "હું માત્ર એક કોળિયો જ ખાઈશ.",
+          "મારાથી એક કોળિયો પણ ખવાશે નહિ.",
+          "હું શા માટે એક કોળિયો જ ખાઉં?",
+          "મારે એક કોળિયો જ કેમ ખાવું?"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 11,
+        "section": "general_knowledge",
+        "question": "રાજકોટ કઈ નદીના કિનારે આવેલું છે?",
+        "options": [
+          "આજી",
+          "નર્મદા",
+          "તાપી",
+          "મહીસાગર"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 12,
+        "section": "general_knowledge",
+        "question": "ગોકુલગ્રામ યોજના કયા મુખ્ય મંત્રીના સમયમાં શરૂ થઇ હતી?",
+        "options": [
+          "કેશુભાઈ પટેલ",
+          "માધવસિંહ સોલંકી",
+          "ડો જીવરાજ મહેતા",
+          "ચીમનભાઈ પટેલ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 13,
+        "section": "general_knowledge",
+        "question": "ગુજરાત પંચાયતમાં સમાજ માટે કઈ સમિતિ હોય છે?",
+        "options": [
+          "સ્ત્રી સમિતિ",
+          "સામાજિક ન્યાય સમિતિ",
+          "બાળ સમિતિ",
+          "લોક સમિતિ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 14,
+        "section": "general_knowledge",
+        "question": "\"અલ્લાહબંધ\" શું છે?",
+        "options": [
+          "કચ્છ-પાકિસ્તાન સરહદ પર આવેલ એક બંધ",
+          "કચ્છમાં આવેલો મહી પર નો સૌથી મોટો બંધ",
+          "કચ્છમાં ભૂકંપના કારણે ઉદ્ ભવેલો 25 કી.મી લાંબો ટેકરો",
+          "કચ્છમાં આવેલ મુસ્લિમોનું તીર્થસ્થાન"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 15,
+        "section": "general_knowledge",
+        "question": "રાણકીવાવ ગુજરાતના કયા શહેરમાં આવેલી છે?",
+        "options": [
+          "પાટણ",
+          "વડનગર",
+          "સિદ્ધપુર",
+          "ખેરાલુ"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 16,
+        "section": "general_knowledge",
+        "question": "ઝવેરચંદ મેઘાણીનો જન્મ ક્યાં થયો હતો?",
+        "options": [
+          "ચોટીલા",
+          "ચોટીલા",
+          "ચાવંડ",
+          "ધારી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 17,
+        "section": "general_knowledge",
+        "question": "ગુજરાતની પ્રથમ ઓઇલ રિફાઇનરી ક્યાં આવેલ છે?",
+        "options": [
+          "કોયલી (વડોદરા)",
+          "શોભાસણ (મહેસાણા)",
+          "કાલોલ (અંબિકાનગર)",
+          "આમાંથી કોઈ નહીં"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 18,
+        "section": "gsrtc_rules",
+        "question": "અમદાવાદ-ગાંધીનગર વચ્ચે ચાલવામાં આવતી બસોનું 'બ્રાન્ડ-નેમ' શું છે?",
+        "options": [
+          "વિકાસ-રૂટ",
+          "ગાંધી-પથ",
+          "ગુર્જરનગરી",
+          "અમદાવાદનગરી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 19,
+        "section": "gsrtc_rules",
+        "question": "એસ.ટી. કયા પ્રકારની બસો ખાનગી પાર્ટી પાસેથી ભાડે લઈ ફેરવે છે?",
+        "options": [
+          "વોલ્વો",
+          "સ્લીપીંગ કોચ",
+          "ગુર્જરનગરી",
+          "સૂર્યનગરી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 20,
+        "section": "gsrtc_rules",
+        "question": "બસની કુલ ક્ષમતાના કેટલા ટકા સુધી રિઝર્વેશન કરાય છે?",
+        "options": [
+          "75%",
+          "60%",
+          "65%",
+          "50%"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "shift_2017_aug5",
+    "title": "કંડક્ટર પેપર (05-08-2017)",
+    "subtitle": "GSRTC Conductor Official Paper (20 પ્રશ્નો - Shift 6)",
+    "date": "05-08-2017",
+    "duration_mins": 30,
+    "total_marks": 20,
+    "questions": [
+      {
+        "id": 1,
+        "section": "maths_reasoning",
+        "question": "આ શ્રેણી જુઓ: 80, 10, 70, 15, 60, .... આગળ કઈ સંખ્યા આવવી જોઈએ?",
+        "options": [
+          "20",
+          "25",
+          "30",
+          "50"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 2,
+        "section": "maths_reasoning",
+        "question": "A, B અને C નું સરેરાશ વજન 45 કિલો છે. જો A અને B નું 40 કિલો અને B અને C નું 43 કિલો હોય, તો B નું વજન કેટલું?",
+        "options": [
+          "17",
+          "20",
+          "26",
+          "31"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 3,
+        "section": "maths_reasoning",
+        "question": "રૂપિયા 1000 નું 6% લેખે 3 માસનું વ્યાજ શોધો?",
+        "options": [
+          "20",
+          "60",
+          "15",
+          "17"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 4,
+        "section": "maths_reasoning",
+        "question": "રૂપિયા 450 ની મૂળ કિંમત ના બલ્બ પર 12% નફો મેળવવા માટે કેટલા રૂપિયા માં વેચવો જોઈએ?",
+        "options": [
+          "506",
+          "504",
+          "604",
+          "494"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 5,
+        "section": "english",
+        "question": "I was watching T.V. while the kids (to play) in the garden.",
+        "options": [
+          "played",
+          "were playing",
+          "was playing",
+          "have played"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 6,
+        "section": "english",
+        "question": "Which word is the antonym of 'superior'?",
+        "options": [
+          "junior",
+          "inferior",
+          "senior",
+          "minor"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 7,
+        "section": "computer",
+        "question": "સ્લાઇડ શોને સમય પ્રમાણે ગોઠવતો કયો વિકલ્પ પસંદ કરશો?",
+        "options": [
+          "Timing",
+          "Rehearse Timing",
+          "Scheduling",
+          "Time Setting"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 8,
+        "section": "computer",
+        "question": "કેબલ ઇન્ટરનેટ માટે સૌથી વધારે ઝડપી સેવા આપે છે:",
+        "options": [
+          "Coaxial Cables",
+          "Optical Fibre Cable",
+          "Satellite",
+          "Simple Cable"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 9,
+        "section": "computer",
+        "question": "HTML કલરકોડ 'FF0000' ક્યા રંગને દર્શાવે છે?",
+        "options": [
+          "Red = 00 Green = FF Blue = 00",
+          "Red = FF Green = 00 Blue = 00",
+          "Red = FFOOOO Green = FFOOOO Blue = FFOOO",
+          "Red = 00 Green = 00 Blue = FF"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 10,
+        "section": "gujarati",
+        "question": "નીચેનામાંથી કયો શબ્દ 'સુધાકર'નો સમાનાર્થી નથી?",
+        "options": [
+          "શશી",
+          "ચંદ્ર",
+          "સોમ",
+          "દિવાકર"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 11,
+        "section": "gujarati",
+        "question": "'કપાળે પરસેવો વળવો' - રૂઢિપ્રયોગનો અર્થ આપો.",
+        "options": [
+          "હાથ મસ્તક પર હોવો",
+          "કસરત કરવી",
+          "મહેરબાની કે કૃપા હોવી",
+          "ખૂબ મહેનત કરવી"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 12,
+        "section": "gujarati",
+        "question": "'પાકે ઘડે કાંઠા ન ચડે' કહેવતનો અર્થ શોધો.",
+        "options": [
+          "ઘડો કાચો હોય ત્યારે કાંઠો ચડાવાવો",
+          "મોટી ઉંમરે નવું શીખી ન શકાય",
+          "બે ક્રિયાઓ એકસાથે ન થાય",
+          "નિર્જન સ્થળે જાહેરાતનો શું અર્થ"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 13,
+        "section": "general_knowledge",
+        "question": "સુકો બરફ (Dry Ice) કયા નામે ઓળખાય છે?",
+        "options": [
+          "આઇસોક્સાઇડ",
+          "ડિસ્ટિલ વોટર",
+          "સલ્ફર ડાયોક્સાઇડ",
+          "સોલિડ કાર્બન ડાયોક્સાઇડ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 14,
+        "section": "general_knowledge",
+        "question": "જમ્મુ કાશ્મીરમાં રાજ્ય ભાષા કઈ છે?",
+        "options": [
+          "ઉર્દૂ",
+          "કાશ્મીરી",
+          "હિન્દી",
+          "પર્શિયન"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 15,
+        "section": "general_knowledge",
+        "question": "ભારત દેશના સૌપ્રથમ ગુજરાતી વડાપ્રધાન કોણ હતા?",
+        "options": [
+          "નરેન્દ્ર મોદી",
+          "શંકરસિંહ વાઘેલા",
+          "મોરારજી દેસાઈ",
+          "સરદાર વલ્લભભાઈ"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 16,
+        "section": "general_knowledge",
+        "question": "ભારતમાં પુરુષોની સરખામણીમાં સ્ત્રીઓનું પ્રમાણ સૌથી વધુ કયા રાજ્યમાં છે?",
+        "options": [
+          "ગુજરાત",
+          "રાજસ્થાન",
+          "ગોવા",
+          "કેરલ"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 17,
+        "section": "gsrtc_rules",
+        "question": "મોટર વાહન હંકારવાનું લાયસન્સ મેળવવા માટેનું કેન્દ્ર સરકારે શું ઠરાવેલું છે?",
+        "options": [
+          "ઓછામાં ઓછી શૈક્ષણિક લાયકાત દસ પાસ",
+          "પુરુષ ઉમેદવાર જ હોવો જોઈએ",
+          "ઉંમરની લાયકાત ઠરાવેલ છે",
+          "ઠરાવતી કોઈ જોગવાઈ નથી"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 18,
+        "section": "first_aid",
+        "question": "નશાયુક્ત હાલતમાં વાહન હંકારનારના લોહીમાં આલ્કોહોલનું પ્રમાણ કેટલું હોવું જરૂરી છે?",
+        "options": [
+          "દર 100મિલીલીટર માં 100 મિલીગ્રામથી વધુ",
+          "દર 100 મિલીલીટર 80 મિલીગ્રામથી વધુ",
+          "દર 100 મિલીલીટર 30મિલીગ્રામથી વધુ",
+          "દર 100 મિલીલીટર 30 મિલીગ્રામથી ઓછું"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 19,
+        "section": "first_aid",
+        "question": "માનવ શરીરમાં ઑક્સિજનનું વાહક કોણ હોય છે?",
+        "options": [
+          "હિમોગ્લોબિન",
+          "હૃદય",
+          "મગજ",
+          "ચામડી"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 20,
+        "section": "gsrtc_rules",
+        "question": "બસની પાછળ આવતા વાહન માટે કેટલા બેલ મારી કંડક્ટર ડ્રાઇવર ને સંજ્ઞા આપે છે?",
+        "options": [
+          "ત્રણ",
+          "દસ",
+          "એક",
+          "છ"
+        ],
+        "answer": 0
+      }
+    ]
+  }
+];
+
+    // Application state
+    let currentShiftIndex = 0;
+    let questions = [];
+    let currentIndex = 0;
+    let userResponses = {}; // { qIndex: { selectedOption: 0..3 or null, status: 'answered'|'not_answered'|'review'|'answered_review'|'not_visited' } }
+    let timerSeconds = 120 * 60;
+    let timerInterval = null;
+    let currentSectionFilter = 'all';
+
+    // Section title mapping
+    const SECTION_NAMES = {
+      'gsrtc_rules': 'રોડ સેફ્ટી અને નિગમ નિયમો',
+      'first_aid': 'પ્રાથમિક ઉપચાર (First Aid)',
+      'gujarati': 'ગુજરાતી વ્યાકરણ અને સાહિત્ય',
+      'computer': 'કમ્પ્યુટર જ્ઞાન',
+      'general_knowledge': 'સામાન્ય જ્ઞાન & વર્તમાન પ્રવાહો',
+      'maths_reasoning': 'ગણિત અને તાર્કિક કસોટી',
+      'english': 'અંગ્રેજી વ્યાકરણ (English)'
+    };
+
+    // Initialize application
+    function initApp() {
+      renderShiftCards();
+      loadShift(0); // Load default 29-12-2024 paper
+      setupEventListeners();
+    }
+
+    // Render shift selector cards
+    function renderShiftCards() {
+      const container = document.getElementById('shiftListContainer');
+      container.innerHTML = '';
+      SHIFTS_DATA.forEach((shift, idx) => {
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between ${idx === currentShiftIndex ? 'bg-blue-50 border-blue-600 shadow-sm ring-1 ring-blue-600' : 'bg-white hover:bg-slate-50 border-slate-300'}`;
+        card.innerHTML = `
+          <div>
+            <div class="font-bold text-sm text-slate-900">${shift.title}</div>
+            <div class="text-xs text-slate-500">${shift.subtitle}</div>
+            <div class="text-[11px] text-blue-700 mt-1 font-medium">તારીખ: ${shift.date} | પ્રશ્નો: ${shift.questions.length} | સમય: ${shift.duration_mins} મિનિટ | ગુણ: ${shift.total_marks}</div>
+          </div>
+          <button class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded transition-colors select-shift-btn" data-shift-idx="${idx}">
+            ${idx === currentShiftIndex ? 'ચાલુ છે (Current)' : 'પસંદ કરો (Attempt)'}
+          </button>
+        `;
+        container.appendChild(card);
+      });
+
+      // Attach click events on shift buttons
+      container.querySelectorAll('.select-shift-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const sIdx = parseInt(e.currentTarget.getAttribute('data-shift-idx'));
+          loadShift(sIdx);
+          document.getElementById('modalShiftSelect').classList.add('hidden');
+        });
+      });
+    }
+
+    // Load selected shift paper
+    function loadShift(index) {
+      currentShiftIndex = index;
+      const shift = SHIFTS_DATA[index];
+      questions = shift.questions;
+      currentIndex = 0;
+      currentSectionFilter = 'all';
+
+      // Update header labels
+      document.getElementById('headerShiftTitle').textContent = shift.date;
+      document.getElementById('currentShiftSubtitle').textContent = `${shift.title} - ${shift.subtitle}`;
+      document.getElementById('lblPaletteCount').textContent = `${questions.length} પ્રશ્નો`;
+
+      // Reset responses
+      userResponses = {};
+      for (let i = 0; i < questions.length; i++) {
+        userResponses[i] = {
+          selectedOption: null,
+          status: 'not_visited' // 'not_visited', 'not_answered', 'answered', 'review', 'answered_review'
+        };
+      }
+      userResponses[0].status = 'not_answered';
+
+      // Reset timer
+      clearInterval(timerInterval);
+      timerSeconds = shift.duration_mins * 60;
+      updateTimerDisplay();
+      startTimer();
+
+      // Render views
+      renderPalette();
+      renderQuestion(currentIndex);
+      updateStatusCounters();
+      renderShiftCards();
+
+      // Reset section tabs UI
+      document.querySelectorAll('.sec-tab').forEach(b => {
+        b.classList.remove('active', 'border-b-2', 'border-blue-600', 'text-blue-700', 'bg-blue-50', 'font-bold');
+        b.classList.add('font-medium', 'text-slate-600');
+      });
+      const allTab = document.querySelector('.sec-tab[data-sec="all"]');
+      if (allTab) {
+        allTab.classList.add('active', 'border-b-2', 'border-blue-600', 'text-blue-700', 'bg-blue-50', 'font-bold');
+      }
+    }
+
+    // Timer management
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          openSubmitSummaryModal();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      const el = document.getElementById('examTimer');
+      el.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      if (timerSeconds <= 300) {
+        el.classList.add('text-rose-400');
+      } else {
+        el.classList.remove('text-rose-400');
+      }
+    }
+
+    // Render current question
+    function renderQuestion(index) {
+      if (index < 0 || index >= questions.length) return;
+      currentIndex = index;
+      const q = questions[index];
+      const resp = userResponses[index];
+
+      // Update question header & status
+      document.getElementById('lblQuestionNumber').textContent = `પ્રશ્ન ક્રમાંક: ${index + 1} / ${questions.length}`;
+      document.getElementById('qNumPrefix').textContent = `પ્ર. ${index + 1}.`;
+      document.getElementById('questionText').textContent = q.question;
+
+      // Update section label
+      const secName = SECTION_NAMES[q.section] || q.section;
+      document.getElementById('lblQuestionType').textContent = `વિભાગ: ${secName} | MCQ`;
+
+      // Grace notice
+      const graceEl = document.getElementById('graceNotice');
+      if (q.answer === -1) {
+        graceEl.classList.remove('hidden');
+      } else {
+        graceEl.classList.add('hidden');
+      }
+
+      // Question status badge
+      const statusBadge = document.getElementById('badgeQuestionStatus');
+      const statusMap = {
+        'not_visited': { text: 'મુલાકાત નથી લીધી', cls: 'bg-slate-200 text-slate-700' },
+        'not_answered': { text: 'જવાબ નથી આપ્યો (Not Answered)', cls: 'bg-red-100 text-red-700' },
+        'answered': { text: 'જવાબ આપ્યો છે (Answered)', cls: 'bg-emerald-100 text-emerald-800' },
+        'review': { text: 'રિવ્યૂ માટે ચિહ્નિત (Marked for Review)', cls: 'bg-purple-100 text-purple-800' },
+        'answered_review': { text: 'જવાબ આપેલ અને રિવ્યૂ માટે ચિહ્નિત', cls: 'bg-purple-200 text-purple-900' }
+      };
+      const st = statusMap[resp.status] || statusMap['not_visited'];
+      statusBadge.textContent = st.text;
+      statusBadge.className = `px-2 py-0.5 rounded text-[11px] font-semibold ${st.cls}`;
+
+      // Render options
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((optText, optIdx) => {
+        const isSelected = resp.selectedOption === optIdx;
+        const optRow = document.createElement('div');
+        optRow.className = `option-row flex items-center gap-3 p-3.5 rounded-lg border cursor-pointer transition-all ${
+          isSelected 
+            ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-500 shadow-sm' 
+            : 'bg-white hover:bg-slate-50 border-slate-300'
+        }`;
+        optRow.innerHTML = `
+          <input type="radio" name="current_question_option" id="opt_${optIdx}" value="${optIdx}" ${isSelected ? 'checked' : ''} class="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500 cursor-pointer pointer-events-none">
+          <label for="opt_${optIdx}" class="flex items-center gap-2 text-sm sm:text-base text-slate-900 cursor-pointer flex-1">
+            <span class="font-bold text-xs px-2 py-0.5 rounded ${isSelected ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}">(${letters[optIdx]})</span>
+            <span class="leading-relaxed font-normal">${optText}</span>
+          </label>
+        `;
+        optRow.addEventListener('click', () => {
+          selectOption(optIdx);
+        });
+        optContainer.appendChild(optRow);
+      });
+
+      // Highlight active in palette
+      highlightPaletteActive(index);
+    }
+
+    // Select an option
+    function selectOption(optIdx) {
+      userResponses[currentIndex].selectedOption = optIdx;
+      renderQuestion(currentIndex);
+    }
+
+    // Highlight palette button
+    function highlightPaletteActive(index) {
+      document.querySelectorAll('.tcs-btn').forEach(btn => btn.classList.remove('active-q'));
+      const activeBtn = document.getElementById(`palBtn_${index}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active-q');
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // Action: Save & Next
+    function handleSaveNext() {
+      const resp = userResponses[currentIndex];
+      if (resp.selectedOption !== null) {
+        resp.status = 'answered';
+      } else {
+        resp.status = 'not_answered';
+      }
+      updateStatusCounters();
+      updatePaletteButton(currentIndex);
+
+      // Move to next question
+      if (currentIndex < questions.length - 1) {
+        jumpToQuestion(currentIndex + 1);
+      }
+    }
+
+    // Action: Mark for Review & Next
+    function handleMarkReview() {
+      const resp = userResponses[currentIndex];
+      if (resp.selectedOption !== null) {
+        resp.status = 'answered_review';
+      } else {
+        resp.status = 'review';
+      }
+      updateStatusCounters();
+      updatePaletteButton(currentIndex);
+
+      // Move to next question
+      if (currentIndex < questions.length - 1) {
+        jumpToQuestion(currentIndex + 1);
+      }
+    }
+
+    // Action: Clear Response
+    function handleClearResponse() {
+      userResponses[currentIndex].selectedOption = null;
+      userResponses[currentIndex].status = 'not_answered';
+      renderQuestion(currentIndex);
+      updateStatusCounters();
+      updatePaletteButton(currentIndex);
+    }
+
+    // Action: Previous Question
+    function handlePrevious() {
+      if (currentIndex > 0) {
+        jumpToQuestion(currentIndex - 1);
+      }
+    }
+
+    // Jump to specific question
+    function jumpToQuestion(index) {
+      if (userResponses[index].status === 'not_visited') {
+        userResponses[index].status = 'not_answered';
+      }
+      updatePaletteButton(index);
+      updateStatusCounters();
+      renderQuestion(index);
+    }
+
+    // Render question palette
+    function renderPalette() {
+      const container = document.getElementById('paletteGrid');
+      container.innerHTML = '';
+      questions.forEach((q, idx) => {
+        // Apply section filter if active
+        if (currentSectionFilter !== 'all' && q.section !== currentSectionFilter) {
+          return;
+        }
+        const btn = document.createElement('button');
+        btn.id = `palBtn_${idx}`;
+        btn.textContent = (idx + 1).toString();
+        btn.className = `tcs-btn ${getPaletteClass(userResponses[idx].status)}`;
+        btn.addEventListener('click', () => {
+          jumpToQuestion(idx);
+          // If on mobile, close drawer on click
+          if (window.innerWidth < 1024) {
+            closeMobilePalette();
+          }
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    // Update single button in palette
+    function updatePaletteButton(idx) {
+      const btn = document.getElementById(`palBtn_${idx}`);
+      if (btn) {
+        btn.className = `tcs-btn ${getPaletteClass(userResponses[idx].status)} ${idx === currentIndex ? 'active-q' : ''}`;
+      }
+    }
+
+    // Helper: Map status to TCS CSS class
+    function getPaletteClass(status) {
+      switch (status) {
+        case 'answered': return 'status-answered';
+        case 'not_answered': return 'status-not-answered';
+        case 'review': return 'status-review';
+        case 'answered_review': return 'status-answered-review';
+        default: return 'status-not-visited';
+      }
+    }
+
+    // Update counters in legend & modal
+    function updateStatusCounters() {
+      let answered = 0, notAnswered = 0, notVisited = 0, review = 0, answeredReview = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const s = userResponses[i].status;
+        if (s === 'answered') answered++;
+        else if (s === 'not_answered') notAnswered++;
+        else if (s === 'review') review++;
+        else if (s === 'answered_review') answeredReview++;
+        else notVisited++;
+      }
+
+      document.getElementById('cntAnswered').textContent = answered;
+      document.getElementById('cntNotAnswered').textContent = notAnswered;
+      document.getElementById('cntNotVisited').textContent = notVisited;
+      document.getElementById('cntReview').textContent = review;
+      document.getElementById('cntAnsweredReview').textContent = answeredReview;
+
+      // Summary modal counters
+      document.getElementById('sumAnswered').textContent = answered;
+      document.getElementById('sumNotAnswered').textContent = notAnswered;
+      document.getElementById('sumReview').textContent = review;
+      document.getElementById('sumAnsweredReview').textContent = answeredReview;
+      document.getElementById('sumNotVisited').textContent = notVisited;
+      document.getElementById('sumTotal').textContent = questions.length;
+    }
+
+    // Open submit summary modal
+    function openSubmitSummaryModal() {
+      updateStatusCounters();
+      document.getElementById('modalSubmitSummary').classList.remove('hidden');
+    }
+
+    // Compute final result & show scorecard
+    function computeAndShowResult() {
+      clearInterval(timerInterval);
+      document.getElementById('modalSubmitSummary').classList.add('hidden');
+
+      let correct = 0;
+      let wrong = 0;
+      let unattempted = 0;
+      let graceCount = 0;
+
+      const secStats = {};
+
+      questions.forEach((q, idx) => {
+        const resp = userResponses[idx];
+        const sec = q.section || 'general';
+        if (!secStats[sec]) {
+          secStats[sec] = { total: 0, correct: 0, wrong: 0, unattempted: 0, marks: 0 };
+        }
+        secStats[sec].total++;
+
+        // If cancelled question (grace mark)
+        if (q.answer === -1) {
+          graceCount++;
+          correct++;
+          secStats[sec].correct++;
+          secStats[sec].marks += 1.0;
+        } else if (resp.selectedOption === null) {
+          unattempted++;
+          secStats[sec].unattempted++;
+        } else if (resp.selectedOption === q.answer) {
+          correct++;
+          secStats[sec].correct++;
+          secStats[sec].marks += 1.0;
+        } else {
+          wrong++;
+          secStats[sec].wrong++;
+          secStats[sec].marks -= 0.25;
+        }
+      });
+
+      // Total marks calculation (+1 for correct/grace, -0.25 for wrong)
+      const positiveMarks = correct * 1.0;
+      const negativeMarks = wrong * 0.25;
+      const finalScore = Math.max(0, positiveMarks - negativeMarks);
+      const totalAttempted = correct + wrong - graceCount;
+      const accuracy = totalAttempted > 0 ? (( (correct - graceCount) / totalAttempted) * 100).toFixed(1) : '0.0';
+
+      const shift = SHIFTS_DATA[currentShiftIndex];
+
+      // Update scorecard UI
+      document.getElementById('resShiftTitle').textContent = `${shift.title} - પરિણામ વિશ્લેષણ`;
+      document.getElementById('resShiftDate').textContent = `પરીક્ષા તારીખ: ${shift.date} | કુલ પ્રશ્નો: ${questions.length}`;
+      document.getElementById('resFinalScore').textContent = finalScore.toFixed(2);
+      document.getElementById('resMaxMarks').textContent = `/ ${questions.length} ગુણ`;
+      document.getElementById('resCorrectCount').textContent = correct;
+      document.getElementById('resCorrectMarks').textContent = `+${positiveMarks.toFixed(2)} ગુણ`;
+      document.getElementById('resWrongCount').textContent = wrong;
+      document.getElementById('resNegativeMarks').textContent = `-${negativeMarks.toFixed(2)} ગુણ`;
+      document.getElementById('resAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('resAttemptedRatio').textContent = `${totalAttempted} / ${questions.length} અટેમ્પટ`;
+
+      // Render section breakdown table
+      const secTableBody = document.getElementById('resSectionTableBody');
+      secTableBody.innerHTML = '';
+      for (const [secKey, stat] of Object.entries(secStats)) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="p-2.5 font-medium">${SECTION_NAMES[secKey] || secKey}</td>
+          <td class="p-2.5 text-center font-bold">${stat.total}</td>
+          <td class="p-2.5 text-center font-bold text-emerald-700">${stat.correct}</td>
+          <td class="p-2.5 text-center font-bold text-rose-700">${stat.wrong}</td>
+          <td class="p-2.5 text-center text-slate-500">${stat.unattempted}</td>
+          <td class="p-2.5 text-center font-bold ${stat.marks >= 0 ? 'text-blue-900' : 'text-rose-700'}">${stat.marks.toFixed(2)}</td>
+        `;
+        secTableBody.appendChild(row);
+      }
+
+      // Render Detailed Question Review
+      renderReviewQuestions('all');
+
+      // Show result modal
+      document.getElementById('modalResult').classList.remove('hidden');
+    }
+
+    // Render detailed questions in review
+    function renderReviewQuestions(filter) {
+      const container = document.getElementById('reviewQuestionsContainer');
+      container.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      questions.forEach((q, idx) => {
+        const resp = userResponses[idx];
+        const isGrace = q.answer === -1;
+        const isCorrect = isGrace || (resp.selectedOption !== null && resp.selectedOption === q.answer);
+        const isWrong = !isGrace && resp.selectedOption !== null && resp.selectedOption !== q.answer;
+        const isUnattempted = !isGrace && resp.selectedOption === null;
+
+        // Apply review filter
+        if (filter === 'correct' && !isCorrect) return;
+        if (filter === 'wrong' && !isWrong) return;
+        if (filter === 'unattempted' && !isUnattempted) return;
+
+        let statusBadge = '';
+        let cardBorder = 'border-slate-200';
+        if (isGrace) {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">ગ્રેસ માર્ક (Cancelled)</span>';
+          cardBorder = 'border-amber-300 bg-amber-50/20';
+        } else if (isCorrect) {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">સાચો જવાબ (+1.00)</span>';
+          cardBorder = 'border-emerald-300 bg-emerald-50/20';
+        } else if (isWrong) {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800">ખોટો જવાબ (-0.25)</span>';
+          cardBorder = 'border-rose-300 bg-rose-50/20';
+        } else {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">બાકી રાખેલ (0.00)</span>';
+        }
+
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-lg border ${cardBorder} space-y-2 text-xs`;
+
+        let optionsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
+        q.options.forEach((optText, optIdx) => {
+          let optStyle = 'border-slate-200 bg-white text-slate-800';
+          let icon = '';
+
+          if (isGrace) {
+            optStyle = 'border-amber-300 bg-amber-50 text-amber-900';
+          } else {
+            if (optIdx === q.answer) {
+              optStyle = 'border-emerald-500 bg-emerald-50 text-emerald-900 font-bold ring-1 ring-emerald-500';
+              icon = '<span class="text-emerald-700 font-bold ml-auto">✓ સાચો ઉત્તર (Official Key)</span>';
+            }
+            if (resp.selectedOption === optIdx && optIdx !== q.answer) {
+              optStyle = 'border-rose-500 bg-rose-50 text-rose-900 font-bold ring-1 ring-rose-500';
+              icon = '<span class="text-rose-700 font-bold ml-auto">✗ તમારો ઉત્તર</span>';
+            } else if (resp.selectedOption === optIdx && optIdx === q.answer) {
+              icon = '<span class="text-emerald-700 font-bold ml-auto">✓ તમારો સાચો ઉત્તર</span>';
+            }
+          }
+
+          optionsHtml += `
+            <div class="p-2 rounded border ${optStyle} flex items-center gap-1.5">
+              <span class="font-bold text-[11px] px-1.5 py-0.5 rounded bg-slate-100">(${letters[optIdx]})</span>
+              <span>${optText}</span>
+              ${icon}
+            </div>
+          `;
+        });
+        optionsHtml += '</div>';
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div class="font-bold text-slate-900 text-xs sm:text-sm">
+              <span class="text-blue-700 mr-1">પ્રશ્ન ${idx + 1}.</span>
+              <span>${q.question}</span>
+            </div>
+            <div class="flex-shrink-0">${statusBadge}</div>
+          </div>
+          ${optionsHtml}
+        `;
+        container.appendChild(card);
+      });
+
+      if (container.children.length === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-slate-400">આ ફિલ્ટરમાં કોઈ પ્રશ્ન મળ્યા નથી.</div>';
+      }
+    }
+
+    // Render Full Question Paper Modal
+    function renderFullQuestionPaper() {
+      const container = document.getElementById('fullPaperListContainer');
+      container.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-1.5';
+        let optHtml = '<div class="grid grid-cols-2 gap-2 mt-1">';
+        q.options.forEach((opt, oIdx) => {
+          optHtml += `<div><span class="font-bold text-slate-600">(${letters[oIdx]})</span> ${opt}</div>`;
+        });
+        optHtml += '</div>';
+
+        item.innerHTML = `
+          <div class="font-bold text-slate-800">
+            <span class="text-blue-700 mr-1">${idx + 1}.</span>
+            <span>${q.question}</span>
+          </div>
+          ${optHtml}
+        `;
+        container.appendChild(item);
+      });
+      document.getElementById('modalQuestionPaper').classList.remove('hidden');
+    }
+
+    // Setup all event listeners
+    function setupEventListeners() {
+      // Navigation buttons
+      document.getElementById('btnSaveNext').addEventListener('click', handleSaveNext);
+      document.getElementById('btnMarkReview').addEventListener('click', handleMarkReview);
+      document.getElementById('btnClearResponse').addEventListener('click', handleClearResponse);
+      document.getElementById('btnPrev').addEventListener('click', handlePrevious);
+
+      // Submit buttons
+      document.getElementById('btnSubmitExam').addEventListener('click', openSubmitSummaryModal);
+      document.getElementById('btnReturnToExam').addEventListener('click', () => {
+        document.getElementById('modalSubmitSummary').classList.add('hidden');
+      });
+      document.getElementById('btnFinalSubmit').addEventListener('click', computeAndShowResult);
+
+      // Section tabs
+      document.querySelectorAll('.sec-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.sec-tab').forEach(b => {
+            b.classList.remove('active', 'border-b-2', 'border-blue-600', 'text-blue-700', 'bg-blue-50', 'font-bold');
+            b.classList.add('font-medium', 'text-slate-600');
+          });
+          e.currentTarget.classList.add('active', 'border-b-2', 'border-blue-600', 'text-blue-700', 'bg-blue-50', 'font-bold');
+          currentSectionFilter = e.currentTarget.getAttribute('data-sec');
+          renderPalette();
+        });
+      });
+
+      // Shift selector modal triggers
+      document.getElementById('btnOpenShiftModal').addEventListener('click', () => {
+        document.getElementById('modalShiftSelect').classList.remove('hidden');
+      });
+      document.getElementById('btnCloseShiftModal').addEventListener('click', () => {
+        document.getElementById('modalShiftSelect').classList.add('hidden');
+      });
+      document.getElementById('btnCancelShiftSelect').addEventListener('click', () => {
+        document.getElementById('modalShiftSelect').classList.add('hidden');
+      });
+
+      // Mobile Palette drawer triggers
+      document.getElementById('btnToggleMobilePalette').addEventListener('click', openMobilePalette);
+      document.getElementById('btnCloseMobilePalette').addEventListener('click', closeMobilePalette);
+      document.getElementById('paletteBackdrop').addEventListener('click', closeMobilePalette);
+
+      // Question Paper Modal
+      document.getElementById('btnOpenQuestionPaper').addEventListener('click', renderFullQuestionPaper);
+      document.getElementById('btnCloseQuestionPaper').addEventListener('click', () => {
+        document.getElementById('modalQuestionPaper').classList.add('hidden');
+      });
+      document.getElementById('btnDismissQuestionPaper').addEventListener('click', () => {
+        document.getElementById('modalQuestionPaper').classList.add('hidden');
+      });
+
+      // Instructions Modal
+      document.getElementById('btnOpenInstructions').addEventListener('click', () => {
+        document.getElementById('modalInstructions').classList.remove('hidden');
+      });
+      document.getElementById('btnCloseInstructions').addEventListener('click', () => {
+        document.getElementById('modalInstructions').classList.add('hidden');
+      });
+      document.getElementById('btnDismissInstructions').addEventListener('click', () => {
+        document.getElementById('modalInstructions').classList.add('hidden');
+      });
+
+      // Result Modal actions
+      document.getElementById('btnCloseResult').addEventListener('click', () => {
+        document.getElementById('modalResult').classList.add('hidden');
+      });
+      document.getElementById('btnReattempt').addEventListener('click', () => {
+        document.getElementById('modalResult').classList.add('hidden');
+        loadShift(currentShiftIndex);
+      });
+      document.getElementById('btnChooseAnotherFromRes').addEventListener('click', () => {
+        document.getElementById('modalResult').classList.add('hidden');
+        document.getElementById('modalShiftSelect').classList.remove('hidden');
+      });
+
+      // Review filter buttons
+      document.querySelectorAll('.rev-flt').forEach(b => {
+        b.addEventListener('click', (e) => {
+          document.querySelectorAll('.rev-flt').forEach(btn => {
+            btn.classList.remove('active', 'bg-blue-600', 'text-white', 'font-bold');
+            btn.classList.add('bg-slate-200', 'text-slate-700');
+          });
+          e.currentTarget.classList.add('active', 'bg-blue-600', 'text-white', 'font-bold');
+          e.currentTarget.classList.remove('bg-slate-200', 'text-slate-700');
+          const flt = e.currentTarget.getAttribute('data-flt');
+          renderReviewQuestions(flt);
+        });
+      });
+
+      // Fullscreen button
+      document.getElementById('btnFullscreen').addEventListener('click', toggleFullscreen);
+
+      // Keyboard navigation (Left/Right arrows, 1-4 for options)
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowRight') {
+          handleSaveNext();
+        } else if (e.key === 'ArrowLeft') {
+          handlePrevious();
+        } else if (['1', '2', '3', '4'].includes(e.key)) {
+          selectOption(parseInt(e.key) - 1);
+        }
+      });
+    }
+
+    function openMobilePalette() {
+      const aside = document.getElementById('paletteAside');
+      const backdrop = document.getElementById('paletteBackdrop');
+      aside.classList.remove('translate-x-full');
+      backdrop.classList.remove('hidden');
+    }
+
+    function closeMobilePalette() {
+      const aside = document.getElementById('paletteAside');
+      const backdrop = document.getElementById('paletteBackdrop');
+      aside.classList.add('translate-x-full');
+      backdrop.classList.add('hidden');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+    }
+
+    // Launch app on load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
